@@ -1,0 +1,38 @@
+GUÍA DE ARRANQUE - TFG SIMULADOR TÁCTICO
+==========================================
+
+Sigue este orden para arrancar el proyecto correctamente:
+
+1. BASE DE DATOS (MySQL vía Docker)
+-----------------------------------
+Ubicación: Raíz del proyecto (TFG_SimuladorTactico)
+Comando:
+    docker-compose up -d
+
+* Nota: Para entrar en la consola de la DB una vez arrancada:
+    docker exec -it simulador_db mysql -u entrenador_user -pentrenador_password simulador_tactico
+
+
+2. BACKEND (Spring Boot)
+------------------------
+Ubicación: TFG_SimuladorTactico/backend
+Comando:
+    ./mvnw spring-boot:run
+
+* Requisito: Tener Java instalado y que la base de datos esté activa.
+
+
+3. FRONTEND (Angular / Ionic)
+-----------------------------
+Ubicación: TFG_SimuladorTactico/frontend
+Comando:
+    npm start
+    (o también "ng serve" o "ionic serve")
+
+* Requisito: Haber ejecutado "npm install" previamente si es la primera vez.
+
+------------------------------------------
+Resumen de URLs por defecto:
+- Frontend: http://localhost:4200 (o 8100 si es Ionic)
+- Backend API: http://localhost:8080
+- DB Port: 3313

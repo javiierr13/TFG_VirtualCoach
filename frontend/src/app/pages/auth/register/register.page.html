@@ -1,0 +1,130 @@
+<ion-content [fullscreen]="true" class="bg-[#0a0e1a]">
+  <!-- Fondo con efecto de degradado y patrón -->
+  <div class="fixed inset-0 bg-gradient-to-br from-[#0a0e1a] via-[#161b2e] to-[#0a0e1a] pointer-events-none"></div>
+  <div class="fixed inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#00c853 0.5px, transparent 0.5px); background-size: 20px 20px;"></div>
+
+  <div class="relative flex flex-col justify-center items-center min-h-screen p-6 py-12">
+    
+    <!-- Logo y Título -->
+    <div class="mb-8 text-center animate-fade-in">
+      <ion-icon name="football-outline" class="text-6xl text-[#00c853] mb-2"></ion-icon>
+      <h1 class="text-3xl font-extrabold text-white tracking-tighter uppercase">
+        Únete al <span class="text-[#00c853] drop-shadow-[0_0_10px_rgba(0,200,83,0.5)]">Equipo</span>
+      </h1>
+    </div>
+
+    <!-- Tarjeta de Registro -->
+    <ion-card class="w-full max-w-md bg-[#1a1f2e]/80 backdrop-blur-xl border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[2rem] overflow-hidden m-0">
+      <ion-card-header class="pt-8 pb-4">
+        <ion-card-title class="text-xl text-white font-bold flex items-center">
+          <ion-button fill="clear" mode="ios" routerLink="/auth/login" class="text-[#00c853] -ml-2">
+            <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+          Nuevo Registro
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content class="px-8 pb-8">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          <div class="space-y-4">
+            
+            <!-- Campo Nombre -->
+            <div class="space-y-1">
+              <div class="flex items-center bg-[#242b3d] px-4 py-1 rounded-2xl border border-transparent focus-within:border-[#00c853]/50 transition-all duration-300">
+                <ion-icon name="person-outline" class="text-gray-400 mr-2 text-xl"></ion-icon>
+                <ion-input
+                  label="Nombre Completo"
+                  labelPlacement="floating"
+                  type="text"
+                  placeholder="Juan Pérez"
+                  formControlName="nombre"
+                  class="text-white font-medium"
+                ></ion-input>
+              </div>
+              @if (registerForm.get('nombre')?.touched && registerForm.get('nombre')?.invalid) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">El nombre debe tener al menos 3 caracteres</p>
+              }
+            </div>
+
+            <!-- Campo Email -->
+            <div class="space-y-1">
+              <div class="flex items-center bg-[#242b3d] px-4 py-1 rounded-2xl border border-transparent focus-within:border-[#00c853]/50 transition-all duration-300">
+                <ion-icon name="mail-outline" class="text-gray-400 mr-2 text-xl"></ion-icon>
+                <ion-input
+                  label="Correo Electrónico"
+                  labelPlacement="floating"
+                  type="email"
+                  placeholder="mister@futbol.com"
+                  formControlName="correo"
+                  class="text-white font-medium"
+                ></ion-input>
+              </div>
+              @if (registerForm.get('correo')?.touched && registerForm.get('correo')?.invalid) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">Introduce un correo válido</p>
+              }
+            </div>
+
+            <!-- Campo Password 1 -->
+            <div class="space-y-1">
+              <div class="flex items-center bg-[#242b3d] px-4 py-1 rounded-2xl border border-transparent focus-within:border-[#00c853]/50 transition-all duration-300">
+                <ion-icon name="lock-closed-outline" class="text-gray-400 mr-2 text-xl"></ion-icon>
+                <ion-input
+                  label="Contraseña"
+                  labelPlacement="floating"
+                  type="password"
+                  placeholder="••••••••"
+                  formControlName="password1"
+                  class="text-white font-medium"
+                ></ion-input>
+              </div>
+              @if (registerForm.get('password1')?.touched && registerForm.get('password1')?.invalid) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">Mínimo 6 caracteres</p>
+              }
+            </div>
+
+            <!-- Campo Password 2 -->
+            <div class="space-y-1">
+              <div class="flex items-center bg-[#242b3d] px-4 py-1 rounded-2xl border border-transparent focus-within:border-[#00c853]/50 transition-all duration-300">
+                <ion-icon name="lock-closed-outline" class="text-gray-400 mr-2 text-xl"></ion-icon>
+                <ion-input
+                  label="Repetir Contraseña"
+                  labelPlacement="floating"
+                  type="password"
+                  placeholder="••••••••"
+                  formControlName="password2"
+                  class="text-white font-medium"
+                ></ion-input>
+              </div>
+              @if (registerForm.errors?.['passwordMismatch'] && registerForm.get('password2')?.touched) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">Las contraseñas no coinciden</p>
+              }
+            </div>
+
+            <!-- Botón Registro -->
+            <ion-button
+              type="submit"
+              expand="block"
+              mode="ios"
+              class="h-14 mt-8 rounded-2xl font-bold text-lg transition-all active:scale-95 shadow-[0_10px_20px_rgba(0,200,83,0.3)]"
+              style="--background: #00c853; --color: #000;"
+              [disabled]="loading()"
+            >
+              @if (loading()) {
+                <ion-spinner name="crescent" class="text-black"></ion-spinner>
+              } @else {
+                CREAR CUENTA
+              }
+            </ion-button>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<style>
+  .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+  .animate-slide-in { animation: slideIn 0.3s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+</style>

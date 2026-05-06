@@ -1,0 +1,17 @@
+{
+  "name": "frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://127.0.0.1:8080/api"
+    },
+    {
+      "path": "/auth",
+      "proxyUrl": "http://127.0.0.1:8080/auth"
+    }
+  ]
+}

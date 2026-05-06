@@ -1,0 +1,136 @@
+<ion-split-pane contentId="main-content">
+  <!-- Menú Lateral con Glassmorphism -->
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content class="bg-[#1a1f2e]">
+      <div class="flex flex-col h-full bg-[#1a1f2e]">
+        <!-- Header del Menú -->
+        <div class="p-8 pb-4">
+          <div class="flex items-center gap-3 mb-2">
+            <ion-icon name="football-outline" class="text-3xl text-[#00c853]"></ion-icon>
+            <h1 class="text-xl font-black text-white tracking-tighter uppercase">
+              VIRTUAL <span class="text-[#00c853]">COACH</span>
+            </h1>
+          </div>
+          <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Virtual Coach v2.0</p>
+        </div>
+
+        <!-- Lista de Navegación -->
+        <ion-list lines="none" class="bg-transparent px-4 mt-4">
+          @for (p of appPages; track p.title) {
+            <ion-menu-toggle auto-hide="false">
+              <ion-item 
+                routerDirection="root" 
+                [routerLink]="[p.url]" 
+                detail="false" 
+                routerLinkActive="selected"
+                class="menu-item mb-2"
+              >
+                <ion-icon aria-hidden="true" slot="start" [name]="p.icon" class="text-xl"></ion-icon>
+                <ion-label class="font-bold tracking-tight uppercase text-xs">{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          }
+        </ion-list>
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <!-- Contenido Principal -->
+  <div class="ion-page" id="main-content">
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="--background-[#0a0e1a] text-white px-2 lg:px-4">
+        <ion-buttons slot="start">
+          <ion-menu-button class="text-[#00c853]"></ion-menu-button>
+        </ion-buttons>
+        <ion-title class="font-bold text-lg">
+          <div class="flex flex-col leading-tight">
+            <span class="text-[10px] text-gray-500 uppercase tracking-widest">Panel Principal</span>
+            <span>Hola coach <span class="text-[#00c853]">{{ authService.nombreEntrenador() }}</span></span>
+          </div>
+        </ion-title>
+        <ion-buttons slot="end">
+          <!-- Botón de Perfil que activa el Popover -->
+          <div id="profile-button" class="flex items-center bg-[#1a1f2e] rounded-full p-1 pr-4 gap-2 border border-white/5 cursor-pointer hover:bg-[#242b3d] transition-all active:scale-95">
+            <ion-icon name="person-circle-outline" class="text-3xl text-[#00c853]"></ion-icon>
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest hidden sm:inline">Perfil</span>
+          </div>
+
+          <ion-popover trigger="profile-button" triggerAction="click" mode="ios" class="profile-popover">
+            <ng-template>
+              <ion-content class="bg-[#1a1f2e]">
+                <ion-list lines="none" class="bg-[#1a1f2e] p-2">
+                  <ion-item (click)="goToProfile()" class="popover-item mb-1" detail="false">
+                    <ion-icon name="settings-outline" slot="start" class="text-[#00c853]"></ion-icon>
+                    <ion-label class="text-white text-sm font-bold">EDITAR PERFIL</ion-label>
+                  </ion-item>
+                  <ion-item (click)="logout()" class="popover-item" detail="false">
+                    <ion-icon name="log-out-outline" slot="start" class="text-red-400"></ion-icon>
+                    <ion-label class="text-red-400 text-sm font-bold">CERRAR SESIÓN</ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-content>
+            </ng-template>
+          </ion-popover>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="bg-[#0a0e1a]">
+      <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+  </div>
+</ion-split-pane>
+
+<style>
+  ion-menu {
+    --width: 220px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  ion-split-pane {
+    --side-width: 220px;
+  }
+
+  .menu-item {
+    --background: transparent;
+    --color: #94a3b8;
+    --border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .menu-item.selected {
+    --background: rgba(0, 200, 83, 0.1);
+    --color: #00c853;
+    font-weight: bold;
+    box-shadow: inset 0 0 0 1px rgba(0, 200, 83, 0.2);
+  }
+
+  .profile-popover {
+    --background: #1a1f2e;
+    --width: 200px;
+    --border-radius: 1.5rem;
+    --box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+
+  .popover-item {
+    --background: transparent;
+    --border-radius: 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .popover-item:hover {
+    --background: rgba(255, 255, 255, 0.05);
+  }
+
+  ion-toolbar {
+    --min-height: 64px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  @media (min-width: 768px) {
+    ion-toolbar {
+      --min-height: 80px;
+    }
+  }
+</style>

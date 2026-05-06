@@ -1,0 +1,136 @@
+<ion-content [fullscreen]="true" class="bg-[#0a0e1a]">
+  <!-- Fondo decorativo (coherente con Login) -->
+  <div class="fixed inset-0 bg-gradient-to-br from-[#0a0e1a] via-[#161b2e] to-[#0a0e1a] pointer-events-none"></div>
+  <div class="fixed inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#00c853 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
+
+  <div class="relative max-w-6xl mx-auto p-6 pt-10">
+    
+    <!-- Hero Section -->
+    <div class="mb-10 animate-fade-in">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="h-1 w-8 bg-[#00c853] rounded-full"></div>
+        <span class="text-[#00c853] text-[10px] font-black uppercase tracking-[0.3em]">Resumen General</span>
+      </div>
+      <h1 class="text-4xl font-black text-white tracking-tighter">ESTADO DEL <span class="text-[#00c853]">CLUB</span></h1>
+      <p class="text-gray-400 mt-2 font-medium">Controla el rendimiento y la estrategia de tu plantilla.</p>
+    </div>
+
+    <!-- Grid de Estadísticas -->
+    <ion-grid class="ion-no-padding">
+      <ion-row class="mb-6">
+        <!-- Card Jugadores -->
+        <ion-col size="12" size-md="4">
+          <div 
+            routerLink="/dashboard/plantilla"
+            class="group bg-[#1a1f2e]/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 m-2 transition-all duration-300 hover:bg-[#1a1f2e] hover:border-[#00c853]/30 hover:-translate-y-1 cursor-pointer active:scale-95"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-3 rounded-2xl bg-[#00c853]/10 text-[#00c853]">
+                <ion-icon name="people-outline" class="text-2xl"></ion-icon>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Plantilla</p>
+                <h3 class="text-3xl font-black text-white">{{ jugadorService.jugadores().length }}</h3>
+              </div>
+            </div>
+            <p class="text-xs text-gray-400 leading-relaxed">Jugadores activos listos para la competición.</p>
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-[#00c853]">
+              <span>Ver Plantilla</span>
+              <ion-icon name="trending-up-outline"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+
+        <!-- Card Tácticas -->
+        <ion-col size="12" size-md="4">
+          <div 
+            routerLink="/dashboard/alineaciones"
+            class="group bg-[#1a1f2e]/60 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 m-2 transition-all duration-300 hover:bg-[#1a1f2e] hover:border-[#00c853]/30 hover:-translate-y-1 cursor-pointer active:scale-95"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="p-3 rounded-2xl bg-[#00c853]/10 text-[#00c853]">
+                <ion-icon name="list-outline" class="text-2xl"></ion-icon>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Tácticas</p>
+                <h3 class="text-3xl font-black text-white">{{ alineacionService.alineaciones().length }}</h3>
+              </div>
+            </div>
+            <p class="text-xs text-gray-400 leading-relaxed">Estrategias guardadas en tu base de datos.</p>
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-[#00c853]">
+              <span>Mis Tácticas</span>
+              <ion-icon name="trending-up-outline"></ion-icon>
+            </div>
+          </div>
+        </ion-col>
+
+        <!-- Card Próximo Reto (Simulado) -->
+        <ion-col size="12" size-md="4">
+          <div 
+            routerLink="/dashboard/pizarra"
+            class="group bg-[#00c853] rounded-[2rem] p-6 m-2 transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,200,83,0.3)] hover:-translate-y-1 overflow-hidden relative cursor-pointer active:scale-95"
+          >
+            <!-- Círculos decorativos -->
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+            
+            <div class="relative z-10">
+              <div class="flex justify-between items-start mb-4">
+                <div class="p-3 rounded-2xl bg-black/10 text-black">
+                  <ion-icon name="grid-outline" class="text-2xl"></ion-icon>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] text-black/60 font-bold uppercase tracking-widest">Acceso Directo</p>
+                  <h3 class="text-xl font-black text-black">NUEVA PIZARRA</h3>
+                </div>
+              </div>
+              <p class="text-xs text-black/80 leading-relaxed font-medium">Prepara tu próximo partido posicionando a tus jugadores.</p>
+              <div class="mt-4 pt-4 border-t border-black/10 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-black">
+                <span>Ir a Pizarra</span>
+                <ion-icon name="trending-up-outline"></ion-icon>
+              </div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Sección Informativa / Feed -->
+      <ion-row>
+        <ion-col size="12">
+          <div class="bg-[#1a1f2e]/40 backdrop-blur-md border border-white/5 rounded-[2.5rem] p-8 m-2">
+            <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <span class="w-2 h-6 bg-[#00c853] rounded-full"></span>
+              Consejos del Asistente
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div 
+                routerLink="/dashboard/plantilla"
+                class="flex gap-4 p-4 rounded-3xl bg-[#242b3d]/50 hover:bg-[#242b3d] transition-colors cursor-pointer active:scale-95"
+              >
+                <div class="text-2xl">📋</div>
+                <div>
+                  <h4 class="text-sm font-bold text-white mb-1">Completa tu plantilla</h4>
+                  <p class="text-xs text-gray-500">Registra al menos 11 jugadores para poder crear alineaciones completas en la pizarra.</p>
+                </div>
+              </div>
+              <div 
+                routerLink="/dashboard/pizarra"
+                class="flex gap-4 p-4 rounded-3xl bg-[#242b3d]/50 hover:bg-[#242b3d] transition-colors cursor-pointer active:scale-95"
+              >
+                <div class="text-2xl">⚡</div>
+                <div>
+                  <h4 class="text-sm font-bold text-white mb-1">Guarda tus variantes</h4>
+                  <p class="text-xs text-gray-500">Crea diferentes formaciones para adaptarte a los puntos débiles del rival.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<style>
+  .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>

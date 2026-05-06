@@ -1,0 +1,95 @@
+<ion-content class="bg-[#0a0e1a]">
+  <!-- Fondo decorativo -->
+  <div class="fixed inset-0 bg-gradient-to-br from-[#0a0e1a] via-[#161b2e] to-[#0a0e1a] pointer-events-none"></div>
+
+  <div class="relative max-w-2xl mx-auto p-6 pt-10">
+    <!-- Header/Título -->
+    <div class="mb-8 flex items-center gap-4">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/dashboard/home" class="text-[#00c853]"></ion-back-button>
+      </ion-buttons>
+      <div>
+        <h1 class="text-3xl font-black text-white tracking-tighter">EDITAR <span class="text-[#00c853]">PERFIL</span></h1>
+        <p class="text-gray-400 text-sm">Gestiona tus datos personales de entrenador.</p>
+      </div>
+    </div>
+
+    <ion-card class="bg-[#1a1f2e]/60 backdrop-blur-xl border border-white/5 rounded-[2.5rem] overflow-hidden m-0 shadow-2xl">
+      <ion-card-header class="border-b border-white/5 pb-6">
+        <div class="flex items-center gap-4">
+          <div class="p-4 rounded-3xl bg-[#00c853]/10 text-[#00c853]">
+            <ion-icon name="person-outline" class="text-3xl"></ion-icon>
+          </div>
+          <ion-card-title class="text-white font-bold">Datos de la Cuenta</ion-card-title>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content class="pt-8">
+        <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()" class="space-y-6">
+          
+          <!-- Campo Nombre -->
+          <div class="space-y-2">
+            <label class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] ml-2">Nombre de Usuario</label>
+            <div class="relative group">
+              <ion-icon name="person-outline" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 z-10 group-focus-within:text-[#00c853] transition-colors"></ion-icon>
+              <ion-input 
+                formControlName="nombre"
+                type="text"
+                placeholder="Nombre del entrenador"
+                class="bg-[#0a0e1a]/50 text-white rounded-2xl pl-12 pr-4 h-14 border border-white/5 focus:border-[#00c853]/50 transition-all"
+              ></ion-input>
+            </div>
+          </div>
+
+          <!-- Campo Correo -->
+          <div class="space-y-2">
+            <label class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] ml-2">Correo Electrónico</label>
+            <div class="relative group">
+              <ion-icon name="mail-outline" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 z-10 group-focus-within:text-[#00c853] transition-colors"></ion-icon>
+              <ion-input 
+                formControlName="correo"
+                type="email"
+                placeholder="correo@ejemplo.com"
+                class="bg-[#0a0e1a]/50 text-white rounded-2xl pl-12 pr-4 h-14 border border-white/5 focus:border-[#00c853]/50 transition-all"
+              ></ion-input>
+            </div>
+          </div>
+
+          <!-- Botón Guardar -->
+          <div class="pt-6">
+            <button 
+              type="submit" 
+              [disabled]="perfilForm.invalid"
+              class="w-full h-14 bg-gradient-to-r from-[#00c853] to-[#009624] text-black font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(0,200,83,0.4)] disabled:opacity-50 disabled:hover:shadow-none transition-all duration-300"
+            >
+              <ion-icon name="save-outline" class="text-xl"></ion-icon>
+              Guardar Cambios
+            </button>
+          </div>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información adicional sutil -->
+    <p class="text-center text-gray-600 text-[10px] uppercase tracking-widest mt-8 font-bold">
+      Los cambios se aplicarán en tu próxima sesión
+    </p>
+  </div>
+</ion-content>
+
+<style>
+  .premium-toast {
+    --background: rgba(0, 200, 83, 0.9);
+    --color: #000;
+    --border-radius: 1rem;
+    --box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    backdrop-filter: blur(10px);
+  }
+
+  ion-input {
+    --padding-start: 48px !important;
+  }
+</style>

@@ -1,0 +1,256 @@
+<ion-content class="bg-[#0a0e1a]">
+  <div class="h-full flex flex-col p-4 select-none" (pointermove)="onGlobalPointerMove($event)">
+    
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex items-center gap-2">
+        <ion-button fill="clear" routerLink="/dashboard/alineaciones" class="text-gray-400">
+          <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <h2 class="text-xl font-bold text-white">Pizarra Táctica</h2>
+      </div>
+      <ion-button fill="clear" (click)="limpiarCampo()" class="text-[#00c853]">
+        <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="flex flex-col lg:flex-row flex-1 gap-4 lg:gap-6 min-h-0 overflow-y-auto lg:overflow-hidden">
+      <!-- Panel de Configuración Superior (Mobile) / Izquierdo (Desktop) -->
+      <div class="w-full lg:w-72 flex flex-col gap-4 flex-shrink-0">
+        <!-- Grid para inputs en mobile para ahorrar espacio -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
+          <!-- Nombre de la Táctica -->
+          <div class="bg-[#1a1f2e] rounded-2xl p-3 border border-white/5 shadow-lg group focus-within:border-[#00c853]/50 transition-all md:col-span-2 lg:col-span-1">
+            <ion-item lines="none" class="--background-transparent text-white">
+              <ion-label position="stacked" class="text-[10px] font-black text-[#00c853] uppercase tracking-[0.2em] mb-1">Nombre de la Táctica</ion-label>
+              <ion-input 
+                type="text" 
+                [ngModel]="nombreTactica()" 
+                (ngModelChange)="nombreTactica.set($event)"
+                placeholder="Ej: Presión Alta 4-4-2"
+                class="font-bold text-lg"
+              ></ion-input>
+            </ion-item>
+          </div>
+  
+          <!-- Tipo de Fútbol -->
+          <div class="bg-[#1a1f2e] rounded-2xl border border-white/5 shadow-lg group focus-within:border-[#00c853]/50 transition-all">
+            <ion-select 
+              [ngModel]="tipoFutbol()" 
+              (ionChange)="tipoFutbol.set($event.detail.value)" 
+              interface="popover" 
+              label="TIPO FÚTBOL"
+              label-placement="stacked"
+              class="text-white font-bold px-4 py-2"
+            >
+              <ion-select-option value="FUTBOL_11">Fútbol 11</ion-select-option>
+              <ion-select-option value="FUTBOL_7">Fútbol 7</ion-select-option>
+              <ion-select-option value="FUTBOL_SALA">Fútbol Sala</ion-select-option>
+            </ion-select>
+          </div>
+  
+          <!-- Formación -->
+          <div class="bg-[#1a1f2e] rounded-2xl border border-white/5 shadow-lg group focus-within:border-[#00c853]/50 transition-all">
+            <ion-select 
+              [ngModel]="formacion()" 
+              (ionChange)="formacion.set($event.detail.value)" 
+              interface="popover" 
+              label="EQUIPO RIVAL"
+              label-placement="stacked"
+              class="text-white font-bold px-4 py-2"
+            >
+              @for (f of (formacionesDisponibles[tipoFutbol()]); track f) {
+                <ion-select-option [value]="f">{{ f }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
+  
+          <!-- Botón para plantar rival -->
+          <ion-button 
+            fill="clear" 
+            (click)="plantarRival()" 
+            class="text-red-400 font-bold text-xs flex items-center justify-center bg-red-400/5 rounded-xl h-10 hover:bg-red-400/10 transition-all"
+          >
+            <ion-icon name="people-outline" slot="start" class="mr-2"></ion-icon>
+            PLANTAR RIVAL
+          </ion-button>
+  
+          <!-- Botón de Guardado -->
+          <ion-button 
+            expand="block" 
+            (click)="guardar()" 
+            class="h-14 font-black tracking-widest save-btn md:col-span-2 lg:col-span-1"
+          >
+            <ion-icon [name]="'save-outline'" slot="start" class="mr-2"></ion-icon>
+            {{ alineacionId() ? 'GUARDAR CAMBIOS' : 'GUARDAR TÁCTICA' }}
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Área de la Pizarra y Banquillo -->
+      <div class="flex-1 flex flex-col min-w-0 min-h-[400px] lg:min-h-0">
+        <!-- Campo de Juego Realista -->
+        <div 
+          class="relative flex-grow rounded-2xl border-4 border-[#2d5a3c] shadow-2xl overflow-hidden field-container select-none touch-none transition-colors duration-500"
+          [style.background]="tipoFutbol() === 'FUTBOL_SALA' ? '#0096d2' : 'repeating-linear-gradient(90deg, #2d5a27 0%, #2d5a27 10%, #356b2e 10%, #356b2e 20%)'"
+          (pointermove)="onDragMove($event)"
+          (pointerup)="onDragEnd($event)"
+          (pointerleave)="onDragEnd()"
+        >
+          <!-- Capa de textura de hierba (solo para fútbol exterior) -->
+          @if (tipoFutbol() !== 'FUTBOL_SALA') {
+            <div class="absolute inset-0 pointer-events-none opacity-20" 
+                 style="background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');">
+            </div>
+          }
+
+          <!-- SVG de Líneas del Campo Dinámico -->
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="absolute inset-0 w-full h-full pointer-events-none">
+            @switch (tipoFutbol()) {
+              @case ('FUTBOL_11') {
+                <rect x="2" y="2" width="96" height="96" fill="none" stroke="white" stroke-width="0.8" />
+                <line x1="50" y1="2" x2="50" y2="98" stroke="white" stroke-width="0.8" />
+                <circle cx="50" cy="50" r="8" fill="none" stroke="white" stroke-width="0.8" />
+                
+                <rect x="2" y="25" width="16" height="50" fill="none" stroke="white" stroke-width="0.8" />
+                <rect x="2" y="40" width="5" height="20" fill="none" stroke="white" stroke-width="0.8" />
+                <circle cx="11" cy="50" r="0.6" fill="white" />
+                <path d="M 18 42 A 8 8 0 0 1 18 58" fill="none" stroke="white" stroke-width="0.8" />
+                
+                <rect x="82" y="25" width="16" height="50" fill="none" stroke="white" stroke-width="0.8" />
+                <rect x="93" y="40" width="5" height="20" fill="none" stroke="white" stroke-width="0.8" />
+                <circle cx="89" cy="50" r="0.6" fill="white" />
+                <path d="M 82 42 A 8 8 0 0 0 82 58" fill="none" stroke="white" stroke-width="0.8" />
+              }
+              @case ('FUTBOL_SALA') {
+                <rect x="2" y="2" width="96" height="96" fill="none" stroke="white" stroke-width="1" />
+                <line x1="50" y1="2" x2="50" y2="98" stroke="white" stroke-width="1" />
+                <circle cx="50" cy="50" r="0.8" fill="white" />
+                
+                <path d="M 2 25 A 25 25 0 0 1 2 75" fill="none" stroke="white" stroke-width="1" />
+                <path d="M 98 25 A 25 25 0 0 0 98 75" fill="none" stroke="white" stroke-width="1" />
+                
+                <circle cx="27" cy="50" r="0.8" fill="white" />
+                <circle cx="73" cy="50" r="0.8" fill="white" />
+                
+                <circle cx="42" cy="50" r="0.4" fill="white" />
+                <circle cx="58" cy="50" r="0.4" fill="white" />
+              }
+              @default {
+                <rect x="2" y="2" width="96" height="96" fill="none" stroke="white" stroke-width="0.9" />
+                <line x1="50" y1="2" x2="50" y2="98" stroke="white" stroke-width="0.9" />
+                <circle cx="50" cy="50" r="7" fill="none" stroke="white" stroke-width="0.9" />
+                
+                <line x1="25" y1="2" x2="25" y2="98" stroke="white" stroke-width="0.6" />
+                <line x1="75" y1="2" x2="75" y2="98" stroke="white" stroke-width="0.6" />
+
+                <rect x="2" y="25" width="16" height="50" fill="none" stroke="white" stroke-width="0.9" />
+                <rect x="2" y="40" width="5" height="20" fill="none" stroke="white" stroke-width="0.9" />
+                <circle cx="11" cy="50" r="0.6" fill="white" />
+
+                <rect x="82" y="25" width="16" height="50" fill="none" stroke="white" stroke-width="0.9" />
+                <rect x="93" y="40" width="5" height="20" fill="none" stroke="white" stroke-width="0.9" />
+                <circle cx="89" cy="50" r="0.6" fill="white" />
+              }
+            }
+
+            <rect x="0.5" y="45" width="1.5" height="10" fill="none" stroke="white" stroke-width="0.5" />
+            <rect x="98" y="45" width="1.5" height="10" fill="none" stroke="white" stroke-width="0.5" />
+            
+            <path d="M 2 5 A 3 3 0 0 0 5 2" fill="none" stroke="white" stroke-width="0.6" />
+            <path d="M 2 95 A 3 3 0 0 1 5 98" fill="none" stroke="white" stroke-width="0.6" />
+            <path d="M 98 5 A 3 3 0 0 1 95 2" fill="none" stroke="white" stroke-width="0.6" />
+            <path d="M 98 95 A 3 3 0 0 0 95 98" fill="none" stroke="white" stroke-width="0.6" />
+          </svg>
+          
+          <!-- Fichas de Jugadores -->
+          @for (pos of posiciones(); track pos.jugadorId) {
+            <div 
+              class="absolute w-10 h-10 md:w-12 md:h-12 -translate-x-1/2 -translate-y-1/2 cursor-move z-10 select-none touch-none"
+              [style.left.%]="pos.posX"
+              [style.top.%]="pos.posY"
+              (pointerdown)="onDragStart(pos.jugadorId)"
+            >
+              <div class="w-full h-full bg-[#00c853] rounded-full flex flex-col items-center justify-center shadow-lg border-2 border-white transition-transform active:scale-125">
+                <span class="text-black font-black text-xs leading-none">{{ getJugadorById(pos.jugadorId)?.dorsal }}</span>
+                <span class="text-[8px] text-black/70 font-bold uppercase truncate w-full text-center px-1">
+                  {{ getJugadorName(pos.jugadorId) }}
+                </span>
+                
+                <!-- Botón de eliminar -->
+                <div 
+                  class="absolute -top-1 -right-1 bg-red-600 rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md active:scale-90 transition-transform cursor-pointer z-20"
+                  (pointerdown)="$event.stopPropagation()"
+                  (click)="eliminarJugador(pos.jugadorId)"
+                >
+                  <ion-icon name="close-outline" class="text-white text-[12px] font-black"></ion-icon>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Fichas de Jugadores Rivales -->
+          @for (riv of posicionesRivales(); track riv.id) {
+            <div 
+              class="absolute w-10 h-10 md:w-12 md:h-12 -translate-x-1/2 -translate-y-1/2 cursor-move z-10 select-none touch-none"
+              [style.left.%]="riv.posX"
+              [style.top.%]="riv.posY"
+              (pointerdown)="onDragStartRival(riv.id)"
+            >
+              <div class="w-full h-full bg-red-600 rounded-full flex flex-col items-center justify-center shadow-lg border-2 border-white transition-transform active:scale-125">
+                <span class="text-white font-black text-lg leading-none">{{ riv.numero }}</span>
+                
+                <!-- Botón de eliminar -->
+                <div 
+                  class="absolute -top-1 -right-1 bg-gray-800 rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md active:scale-90 transition-transform cursor-pointer z-20"
+                  (pointerdown)="$event.stopPropagation()"
+                  (click)="eliminarRival(riv.id)"
+                >
+                  <ion-icon name="close-outline" class="text-white text-[12px] font-black"></ion-icon>
+                </div>
+              </div>
+            </div>
+          }
+
+          @if (posiciones().length === 0 && posicionesRivales().length === 0) {
+            <div class="absolute inset-0 flex items-center justify-center text-white/50 text-center p-8">
+              Añade jugadores a tu plantilla para empezar a diseñar tácticas.
+            </div>
+          }
+        </div>
+
+        <!-- Banquillo -->
+        <div class="mt-4">
+          <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 px-1">Banquillo</h3>
+          <div class="flex gap-4 overflow-x-auto pb-2 px-1 no-scrollbar">
+            @for (jugador of banquillo(); track jugador.id) {
+              <div 
+                class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 bg-white/5 rounded-full flex flex-col items-center justify-center border border-white/10 shadow-lg cursor-grab active:cursor-grabbing touch-none active:scale-110 transition-transform"
+                (pointerdown)="onDragStartBench(jugador.id)"
+              >
+                <span class="text-white font-black text-xs leading-none">{{ jugador.dorsal }}</span>
+                <span class="text-[7px] text-gray-400 font-bold uppercase truncate w-full text-center px-1">
+                  {{ jugador.nombre.split(' ')[0] }}
+                </span>
+              </div>
+            } @empty {
+              <div class="text-[10px] text-gray-600 italic py-2">No hay jugadores disponibles</div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ficha Flotante al arrastrar desde el banquillo -->
+  @if (draggedBenchJugadorId !== null) {
+    <div 
+      class="fixed pointer-events-none z-[9999] w-10 h-10 md:w-12 md:h-12"
+      [style.transform]="'translate3d(' + (mousePos().x - 20) + 'px, ' + (mousePos().y - 20) + 'px, 0) scale(1.1)'"
+    >
+      <div class="w-full h-full bg-[#00c853] rounded-full flex flex-col items-center justify-center shadow-2xl border-2 border-white">
+        <span class="text-white font-black text-sm">{{ getJugadorById(draggedBenchJugadorId)?.dorsal }}</span>
+        <span class="text-[8px] text-white/80 font-bold uppercase truncate px-1">{{ getJugadorName(draggedBenchJugadorId) }}</span>
+      </div>
+    </div>
+  }
+</ion-content>

@@ -1,0 +1,81 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+/** Ionic CSS Variables **/
+:root {
+  /** Primary: Vibrant Football Green **/
+  --ion-color-primary: #00c853;
+  --ion-color-primary-rgb: 0, 200, 83;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #00b049;
+  --ion-color-primary-tint: #1ade64;
+
+  --ion-color-secondary: #00e5ff;
+  --ion-color-secondary-rgb: 0, 229, 255;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #00cae0;
+  --ion-color-secondary-tint: #1ae8ff;
+
+  --ion-color-tertiary: #6a64ff;
+  --ion-color-tertiary-rgb: 106, 100, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #5d58e0;
+  --ion-color-tertiary-tint: #7974ff;
+
+  --ion-color-success: #00c853;
+  --ion-color-success-rgb: 0, 200, 83;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+
+  --ion-color-warning: #ffd600;
+  --ion-color-warning-rgb: 255, 214, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+
+  --ion-color-danger: #ff1744;
+  --ion-color-danger-rgb: 255, 23, 68;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+
+  --ion-color-dark: #f4f5f8;
+  --ion-color-dark-rgb: 244, 245, 248;
+  --ion-color-dark-contrast: #000000;
+  --ion-color-dark-contrast-rgb: 0, 0, 0;
+
+  --ion-color-medium: #989aa2;
+  --ion-color-medium-rgb: 152, 154, 162;
+  --ion-color-medium-contrast: #000000;
+  --ion-color-medium-contrast-rgb: 0, 0, 0;
+
+  --ion-color-light: #222428;
+  --ion-color-light-rgb: 34, 36, 40;
+  --ion-color-light-contrast: #ffffff;
+  --ion-color-light-contrast-rgb: 255, 255, 255;
+
+  /** Custom Backgrounds **/
+  --ion-background-color: #0a0e1a;
+  --ion-background-color-rgb: 10, 14, 26;
+
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+
+  --ion-border-color: #1a1f2e;
+
+  --ion-item-background: #111522;
+
+  --ion-toolbar-background: #0a0e1a;
+  --ion-toolbar-color: #ffffff;
+
+  --ion-tab-bar-background: #0a0e1a;
+  --ion-tab-bar-color: #ffffff;
+
+  --ion-card-background: #1a1f2e;
+}
+
+body {
+  font-family: 'Outfit', sans-serif !important;
+}
+

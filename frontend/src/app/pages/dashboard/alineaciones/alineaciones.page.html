@@ -1,0 +1,64 @@
+<ion-content class="bg-[#0a0e1a]">
+  <div class="p-4">
+    <h2 class="text-2xl font-bold text-white mb-6">Mis Tácticas Guardadas</h2>
+
+    <ion-list class="bg-transparent">
+      @for (ali of alineacionService.alineaciones(); track ali.id) {
+        <ion-item-sliding class="mb-4 rounded-2xl overflow-hidden group">
+          <ion-item 
+            lines="none" 
+            class="--background-[#1a1f2e] text-white py-4 cursor-pointer hover:--background-[#242b3d] transition-all"
+            (click)="editarTactica(ali.id)"
+          >
+            <div slot="start" class="bg-[#00c853]/20 p-3 rounded-xl mr-4">
+              <ion-icon name="football-outline" class="text-3xl text-[#00c853]"></ion-icon>
+            </div>
+            
+            <ion-label>
+              <h2 class="text-lg lg:text-xl font-bold mb-1">{{ ali.nombre || ali.tipoFormacion }}</h2>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                <ion-badge color="dark" class="bg-[#242b3d] text-gray-300 w-fit">
+                  {{ ali.tipoFutbol.replace('_', ' ') }}
+                </ion-badge>
+                <span class="text-[10px] sm:text-xs text-gray-500 flex items-center">
+                  <ion-icon name="calendar-outline" class="mr-1"></ion-icon>
+                  {{ formatDate(ali.fechaCreacion) }}
+                </span>
+              </div>
+            </ion-label>
+
+            <!-- Botón de Borrado con estilo de cruz roja -->
+            <button 
+              (click)="eliminar(ali.id); $event.stopPropagation()"
+              class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-all"
+            >
+              <ion-icon name="close-outline" class="text-2xl"></ion-icon>
+            </button>
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="eliminar(ali.id)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      } @empty {
+        <div class="flex flex-col items-center justify-center py-20 text-gray-500">
+          <div class="bg-[#1a1f2e] p-8 rounded-full mb-6">
+            <ion-icon name="list-outline" class="text-7xl text-gray-700"></ion-icon>
+          </div>
+          <p class="text-lg font-medium">No has guardado ninguna alineación aún.</p>
+          <ion-button routerLink="/dashboard/pizarra" fill="clear" class="text-[#00c853] mt-2">
+            Ir a la pizarra
+          </ion-button>
+        </div>
+      }
+    </ion-list>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="mb-6 mr-6">
+    <ion-fab-button (click)="crearNuevaTactica()" style="--background: #00c853; --box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4); --border-radius: 50%;">
+      <ion-icon name="add-outline" class="text-black text-3xl"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

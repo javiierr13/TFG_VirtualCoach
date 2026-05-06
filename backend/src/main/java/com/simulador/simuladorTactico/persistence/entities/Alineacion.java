@@ -1,0 +1,56 @@
+package com.simulador.simuladorTactico.persistence.entities;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.simulador.simuladorTactico.persistence.enums.TipoFutbol;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Entity
+@Table(name = "alineacion")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Alineacion {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@Column(name = "nombre", length = 100)
+	private String nombre;
+
+	@Column(name = "tipo_formacion", nullable = false, length = 200)
+	private String tipoFormacion;
+
+	@Column(name = "fecha_creacion")
+	private LocalDateTime fechaCreacion;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_futbol")
+	private TipoFutbol tipoFutbol;
+
+	// Relación ManyToOne: Muchas alineaciones pertenecen a un Entrenador
+	@ManyToOne
+	@JoinColumn(name = "id_entrenador", nullable = false)
+	@JsonIgnore // IMPORTANTE: Corta el bucle infinito al pedir la alineación
+	private Entrenador entrenador;
+
+	// Relación OneToMany: Una alineación tiene muchas posiciones (Participa)
+	// NOTA: Aquí NO ponemos JsonIgnore porque cuando pidas la táctica,
+	// SÍ querrás ver dónde están colocados los jugadores.
+	@OneToMany(mappedBy = "alineacion", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Participa> posiciones;
+
+	// Este método se ejecuta solo antes de guardar en la BD
+	@PrePersist
+	protected void onCreate() {
+		if (this.fechaCreacion == null) {
+			this.fechaCreacion = LocalDateTime.now();
+		}
+	}
+}

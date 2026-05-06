@@ -1,0 +1,111 @@
+<ion-content [fullscreen]="true" class="bg-[#0a0e1a]">
+  <!-- Fondo con efecto de degradado y patrón -->
+  <div class="fixed inset-0 bg-gradient-to-br from-[#0a0e1a] via-[#161b2e] to-[#0a0e1a] pointer-events-none"></div>
+  <div class="fixed inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#00c853 0.5px, transparent 0.5px); background-size: 20px 20px;"></div>
+
+  <div class="relative flex flex-col justify-center items-center min-h-screen p-6">
+    
+    <!-- Logo y Título -->
+    <div class="mb-10 text-center animate-fade-in">
+      <div class="inline-block p-4 rounded-full bg-[#1a1f2e] shadow-inner mb-4">
+        <ion-icon name="football-outline" class="text-7xl text-[#00c853]"></ion-icon>
+      </div>
+      <h1 class="text-4xl font-extrabold text-white tracking-tighter uppercase">
+        Virtual <span class="text-[#00c853] drop-shadow-[0_0_10px_rgba(0,200,83,0.5)]">Coach</span>
+      </h1>
+      <p class="text-gray-400 mt-2 font-medium">Eleva tu estrategia al siguiente nivel</p>
+    </div>
+
+    <!-- Tarjeta de Login -->
+    <ion-card class="w-full max-w-md bg-[#1a1f2e]/80 backdrop-blur-xl border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[2rem] overflow-hidden m-0">
+      <ion-card-header class="pt-8 pb-4 text-center">
+        <ion-card-title class="text-2xl text-white font-bold">¡Hola, Coach!</ion-card-title>
+        <p class="text-gray-400 text-sm mt-1">Introduce tus credenciales para entrar al banquillo</p>
+      </ion-card-header>
+
+      <ion-card-content class="px-8 pb-8">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <div class="space-y-5">
+            
+            <!-- Campo Email -->
+            <div class="space-y-1">
+              <div class="flex items-center bg-[#242b3d] px-4 py-1 rounded-2xl border border-transparent focus-within:border-[#00c853]/50 transition-all duration-300">
+                <ion-icon name="mail-outline" class="text-gray-400 mr-2 text-xl"></ion-icon>
+                <ion-input
+                  label="Correo Electrónico"
+                  labelPlacement="floating"
+                  type="email"
+                  placeholder="coach@futbol.com"
+                  formControlName="correo"
+                  class="text-white font-medium"
+                ></ion-input>
+              </div>
+              @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.errors?.['required']) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">El correo es obligatorio</p>
+              }
+              @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.errors?.['email']) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">Formato de correo inválido</p>
+              }
+            </div>
+
+            <!-- Campo Password -->
+            <div class="space-y-1">
+              <div class="flex items-center bg-[#242b3d] px-4 py-1 rounded-2xl border border-transparent focus-within:border-[#00c853]/50 transition-all duration-300">
+                <ion-icon name="lock-closed-outline" class="text-gray-400 mr-2 text-xl"></ion-icon>
+                <ion-input
+                  label="Contraseña"
+                  labelPlacement="floating"
+                  type="password"
+                  placeholder="••••••••"
+                  formControlName="password"
+                  class="text-white font-medium"
+                ></ion-input>
+              </div>
+              @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">La contraseña es obligatoria</p>
+              }
+              @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']) {
+                <p class="text-red-400 text-xs ml-4 animate-slide-in">Mínimo 6 caracteres</p>
+              }
+            </div>
+
+            <!-- Botón Login -->
+            <ion-button
+              type="submit"
+              expand="block"
+              mode="ios"
+              class="h-14 mt-8 rounded-2xl font-bold text-lg transition-all active:scale-95 shadow-[0_10px_20px_rgba(0,200,83,0.3)]"
+              style="--background: #00c853; --color: #000;"
+              [disabled]="loading()"
+            >
+              @if (loading()) {
+                <ion-spinner name="crescent" class="text-black"></ion-spinner>
+              } @else {
+                INICIAR SESIÓN
+              }
+            </ion-button>
+          </div>
+        </form>
+
+        <div class="mt-10 text-center">
+          <p class="text-gray-400 text-sm">
+            ¿Aún no tienes equipo? 
+            <a routerLink="/auth/register" class="text-[#00c853] font-bold hover:text-[#00e676] transition-colors ml-1">Regístrate gratis</a>
+          </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Footer decorativo -->
+    <div class="mt-8 text-gray-600 text-[10px] uppercase tracking-[0.2em] font-bold">
+      Version 2.0.26 PRO - Virtual Coach Tactical Suite
+    </div>
+  </div>
+</ion-content>
+
+<style>
+  .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+  .animate-slide-in { animation: slideIn 0.3s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+</style>
