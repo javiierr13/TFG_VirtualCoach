@@ -25,19 +25,18 @@ public class Entrenador {
 	private String correo;
 
 	@Column(nullable = false)
-	@JsonIgnore // SEGURIDAD: Evita que la contraseña viaje en la respuesta JSON
+	@JsonIgnore
 	private String contrasena;
 
-	// Rol del usuario necesario para Spring Security
 	private String rol;
 
 	// Relación: Un entrenador tiene muchos jugadores
 	@OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL)
-	@JsonIgnore // EVITA BUCLE INFINITO
+	@JsonIgnore
 	private List<Jugador> jugadores;
 
 	// Relación: Un entrenador tiene muchas alineaciones
 	@OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL)
-	@JsonIgnore // EVITA BUCLE INFINITO
+	@JsonIgnore
 	private List<Alineacion> alineaciones;
 }

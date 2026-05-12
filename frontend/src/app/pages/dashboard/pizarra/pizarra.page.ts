@@ -39,7 +39,7 @@ export class PizarraPage implements OnInit {
   private alineacionService = inject(AlineacionService);
   private toastCtrl = inject(ToastController);
   private route = inject(ActivatedRoute);
-  
+
   mousePos = signal({ x: 0, y: 0 });
 
   alineacionId = signal<number | null>(null);
@@ -56,29 +56,23 @@ export class PizarraPage implements OnInit {
   };
 
   coordenadasBase: any = {
-    '4-4-2': [
+    '4-4-2': [ // Futbol 11
       { x: 8, y: 50 }, // Portero
       { x: 25, y: 20 }, { x: 25, y: 40 }, { x: 25, y: 60 }, { x: 25, y: 80 }, // Defensas
       { x: 50, y: 20 }, { x: 50, y: 40 }, { x: 50, y: 60 }, { x: 50, y: 80 }, // Medios
       { x: 75, y: 35 }, { x: 75, y: 65 } // Delanteros
     ],
-    '4-3-3': [
+    '4-3-3': [// Futbol 11
       { x: 8, y: 50 },
       { x: 25, y: 20 }, { x: 25, y: 40 }, { x: 25, y: 60 }, { x: 25, y: 80 },
       { x: 50, y: 25 }, { x: 50, y: 50 }, { x: 50, y: 75 },
       { x: 75, y: 20 }, { x: 75, y: 50 }, { x: 75, y: 80 }
     ],
-    '3-5-2': [
+    '3-5-2': [// Futbol 11
       { x: 8, y: 50 },
       { x: 25, y: 25 }, { x: 25, y: 50 }, { x: 25, y: 75 },
       { x: 45, y: 20 }, { x: 55, y: 35 }, { x: 55, y: 50 }, { x: 55, y: 65 }, { x: 45, y: 80 },
       { x: 75, y: 40 }, { x: 75, y: 60 }
-    ],
-    '5-4-1': [
-      { x: 8, y: 50 },
-      { x: 25, y: 15 }, { x: 25, y: 33 }, { x: 25, y: 50 }, { x: 25, y: 67 }, { x: 25, y: 85 },
-      { x: 50, y: 20 }, { x: 50, y: 40 }, { x: 50, y: 60 }, { x: 50, y: 80 },
-      { x: 75, y: 50 }
     ],
     '2-3-1': [ // Futbol 7
       { x: 8, y: 50 },
@@ -130,7 +124,6 @@ export class PizarraPage implements OnInit {
   constructor() {
     addIcons({ saveOutline, refreshOutline, optionsOutline, personCircleOutline, arrowBackOutline, closeOutline, flagOutline, peopleOutline });
 
-    // Al cambiar la formación o el tipo de fútbol, verificamos validez pero NO plantamos automático
     effect(() => {
       const tipo = this.tipoFutbol();
       const form = this.formacion();
@@ -142,7 +135,7 @@ export class PizarraPage implements OnInit {
     }, { allowSignalWrites: true });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.jugadorService.loadJugadores().subscribe(() => {

@@ -37,16 +37,13 @@ public class Alineacion {
 	// Relación ManyToOne: Muchas alineaciones pertenecen a un Entrenador
 	@ManyToOne
 	@JoinColumn(name = "id_entrenador", nullable = false)
-	@JsonIgnore // IMPORTANTE: Corta el bucle infinito al pedir la alineación
+	@JsonIgnore
 	private Entrenador entrenador;
 
 	// Relación OneToMany: Una alineación tiene muchas posiciones (Participa)
-	// NOTA: Aquí NO ponemos JsonIgnore porque cuando pidas la táctica,
-	// SÍ querrás ver dónde están colocados los jugadores.
 	@OneToMany(mappedBy = "alineacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Participa> posiciones;
 
-	// Este método se ejecuta solo antes de guardar en la BD
 	@PrePersist
 	protected void onCreate() {
 		if (this.fechaCreacion == null) {

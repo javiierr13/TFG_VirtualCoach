@@ -50,13 +50,12 @@ public class Jugador {
 	// Relación ManyToOne: Muchos jugadores pertenecen a un Entrenador
 	@ManyToOne
 	@JoinColumn(name = "id_entrenador", nullable = false)
-	@JsonIgnore // <--- Esto evita que al pedir un jugador se traiga todos los datos del
-				// entrenador en bucle
+	@JsonIgnore
 	private Entrenador entrenador;
 
-	//Relación para el borrado en cascada
+	// Relación para el borrado en cascada
 	@OneToMany(mappedBy = "jugador", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore 
+	@JsonIgnore
 	private List<Participa> participaciones;
 
 }

@@ -25,8 +25,7 @@ public class Participa {
 	// Relación: A qué pizarra pertenece esta ficha
 	@ManyToOne
 	@JoinColumn(name = "id_alineacion", nullable = false)
-	@JsonIgnore // <--- Corta el bucle. No queremos ver la alineación otra vez dentro de sí
-				// misma.
+	@JsonIgnore
 	private Alineacion alineacion;
 
 	@Column(name = "pos_x")
