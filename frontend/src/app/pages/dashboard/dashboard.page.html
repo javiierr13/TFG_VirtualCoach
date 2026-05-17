@@ -1,9 +1,9 @@
 <ion-split-pane contentId="main-content">
-  <!-- Menú Lateral con Glassmorphism -->
+  
   <ion-menu contentId="main-content" type="overlay">
     <ion-content class="bg-[#1a1f2e]">
       <div class="flex flex-col h-full bg-[#1a1f2e]">
-        <!-- Header del Menú -->
+        
         <div class="p-8 pb-4">
           <div class="flex items-center gap-3 mb-2">
             <ion-icon name="football-outline" class="text-3xl text-[#00c853]"></ion-icon>
@@ -14,7 +14,7 @@
           <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Virtual Coach v2.0</p>
         </div>
 
-        <!-- Lista de Navegación -->
+        
         <ion-list lines="none" class="bg-transparent px-4 mt-4">
           @for (p of appPages; track p.title) {
             <ion-menu-toggle auto-hide="false">
@@ -35,7 +35,7 @@
     </ion-content>
   </ion-menu>
 
-  <!-- Contenido Principal -->
+  
   <div class="ion-page" id="main-content">
     <ion-header class="ion-no-border">
       <ion-toolbar class="--background-[#0a0e1a] text-white px-2 lg:px-4">
@@ -49,7 +49,7 @@
           </div>
         </ion-title>
         <ion-buttons slot="end">
-          <!-- Botón de Perfil que activa el Popover -->
+          
           <div id="profile-button" class="flex items-center bg-[#1a1f2e] rounded-full p-1 pr-4 gap-2 border border-white/5 cursor-pointer hover:bg-[#242b3d] transition-all active:scale-95">
             <ion-icon name="person-circle-outline" class="text-3xl text-[#00c853]"></ion-icon>
             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest hidden sm:inline">Perfil</span>

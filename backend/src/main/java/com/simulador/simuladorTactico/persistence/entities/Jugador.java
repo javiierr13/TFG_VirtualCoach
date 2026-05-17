@@ -47,13 +47,13 @@ public class Jugador {
 	@Column(name = "pierna_dominante")
 	private PiernaDominante piernaDominante;
 
-	// Relación ManyToOne: Muchos jugadores pertenecen a un Entrenador
+	
 	@ManyToOne
 	@JoinColumn(name = "id_entrenador", nullable = false)
 	@JsonIgnore
 	private Entrenador entrenador;
 
-	// Relación para el borrado en cascada
+	
 	@OneToMany(mappedBy = "jugador", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<Participa> participaciones;

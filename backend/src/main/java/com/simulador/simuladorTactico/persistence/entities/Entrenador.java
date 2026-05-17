@@ -30,12 +30,12 @@ public class Entrenador {
 
 	private String rol;
 
-	// Relación: Un entrenador tiene muchos jugadores
+	
 	@OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Jugador> jugadores;
 
-	// Relación: Un entrenador tiene muchas alineaciones
+	
 	@OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Alineacion> alineaciones;

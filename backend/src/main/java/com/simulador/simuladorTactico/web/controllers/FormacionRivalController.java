@@ -15,7 +15,7 @@ public class FormacionRivalController {
     @Autowired
     private FormacionRivalService service;
 
-    // GET http://localhost:8080/api/rivales/formacion?tipo=FUTBOL_11&nombre=4-4-2
+    
     @GetMapping("/formacion")
     public ResponseEntity<List<CoordenadaDTO>> obtenerRival(
             @RequestParam String tipo,
@@ -23,7 +23,7 @@ public class FormacionRivalController {
         return ResponseEntity.ok(service.obtenerFormacion(tipo, nombre));
     }
     
-    // GET http://localhost:8080/api/rivales/lista
+    
     @GetMapping("/lista")
     public ResponseEntity<List<String>> listarOpciones() {
         return ResponseEntity.ok(service.listarDisponibles());

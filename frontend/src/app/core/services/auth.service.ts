@@ -14,7 +14,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  // Signals para el estado reactivo
+  
   token = signal<string | null>(localStorage.getItem('token'));
   nombreEntrenador = signal<string | null>(localStorage.getItem('nombreEntrenador'));
   emailUsuario = signal<string | null>(localStorage.getItem('emailUsuario'));
@@ -27,11 +27,11 @@ export class AuthService {
         this.token.set(res.accessToken);
         localStorage.setItem('token', res.accessToken);
         
-        // Guardamos el correo
+        
         this.emailUsuario.set(correo);
         localStorage.setItem('emailUsuario', correo);
 
-        // El nombre no viene en el login, se asume que se guardó en el registro o se saca del token
+        
         if (!this.nombreEntrenador()) {
           const defaultName = correo.split('@')[0];
           this.nombreEntrenador.set(defaultName);

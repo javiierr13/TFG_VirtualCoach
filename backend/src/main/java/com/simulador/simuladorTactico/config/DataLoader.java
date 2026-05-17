@@ -31,7 +31,7 @@ public class DataLoader implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        // 1. Crear Entrenador de prueba si no existe
+        
         String testEmail = "admin@test.com";
         if (entrenadorRepository.findByCorreo(testEmail).isEmpty()) {
             Entrenador admin = new Entrenador();
@@ -41,11 +41,11 @@ public class DataLoader implements CommandLineRunner {
             admin.setRol("ROLE_USER");
             admin = entrenadorRepository.save(admin);
 
-            // 2. Crear un equipo de 11 jugadores para este entrenador
+            
             List<Jugador> equipo = createSamplePlayers(admin);
             jugadorRepository.saveAll(equipo);
 
-            // 3. Crear alineaciones de ejemplo (F11, F7 y Sala)
+            
             createSampleAlignmentF11(admin, equipo);
             createSampleAlignmentF7(admin, equipo);
             createSampleAlignmentSala(admin, equipo);
@@ -58,22 +58,22 @@ public class DataLoader implements CommandLineRunner {
     private List<Jugador> createSamplePlayers(Entrenador entrenador) {
         List<Jugador> jugadores = new ArrayList<>();
         
-        // Portero
+        
         jugadores.add(createPlayer("Iker Casillas", 1, Posicion.PORTERO, PiernaDominante.DIESTRO, entrenador));
         
-        // Defensas
+        
         jugadores.add(createPlayer("Sergio Ramos", 4, Posicion.DEFENSA, PiernaDominante.DIESTRO, entrenador));
         jugadores.add(createPlayer("Carles Puyol", 5, Posicion.DEFENSA, PiernaDominante.DIESTRO, entrenador));
         jugadores.add(createPlayer("Jordi Alba", 18, Posicion.DEFENSA, PiernaDominante.ZURDO, entrenador));
         jugadores.add(createPlayer("Dani Carvajal", 2, Posicion.DEFENSA, PiernaDominante.DIESTRO, entrenador));
         
-        // Medios
+        
         jugadores.add(createPlayer("Andrés Iniesta", 6, Posicion.MEDIOCENTRO, PiernaDominante.DIESTRO, entrenador));
         jugadores.add(createPlayer("Xavi Hernández", 8, Posicion.MEDIOCENTRO, PiernaDominante.DIESTRO, entrenador));
         jugadores.add(createPlayer("Sergio Busquets", 5, Posicion.MEDIOCENTRO, PiernaDominante.DIESTRO, entrenador));
         jugadores.add(createPlayer("David Silva", 21, Posicion.MEDIOCENTRO, PiernaDominante.ZURDO, entrenador));
         
-        // Delanteros
+        
         jugadores.add(createPlayer("Fernando Torres", 9, Posicion.DELANTERO, PiernaDominante.DIESTRO, entrenador));
         jugadores.add(createPlayer("David Villa", 7, Posicion.DELANTERO, PiernaDominante.DIESTRO, entrenador));
 
@@ -97,24 +97,24 @@ public class DataLoader implements CommandLineRunner {
         alineacion.setEntrenador(entrenador);
         alineacion.setPosiciones(new ArrayList<>());
 
-        // Portero
-        addParticipacion(alineacion, equipo.get(0), 5, 50); // Iker
         
-        // Defensas
-        addParticipacion(alineacion, equipo.get(3), 20, 15); // Jordi Alba (LI)
-        addParticipacion(alineacion, equipo.get(1), 20, 40); // Ramos (DFI)
-        addParticipacion(alineacion, equipo.get(2), 20, 60); // Puyol (DFD)
-        addParticipacion(alineacion, equipo.get(4), 20, 85); // Carvajal (LD)
+        addParticipacion(alineacion, equipo.get(0), 5, 50); 
         
-        // Medios
-        addParticipacion(alineacion, equipo.get(5), 45, 20); // Iniesta (MI)
-        addParticipacion(alineacion, equipo.get(7), 40, 50); // Busquets (MCD)
-        addParticipacion(alineacion, equipo.get(6), 45, 80); // Xavi (MD)
-        addParticipacion(alineacion, equipo.get(8), 60, 50); // Silva (MCO)
         
-        // Delanteros
-        addParticipacion(alineacion, equipo.get(9), 85, 35); // Torres
-        addParticipacion(alineacion, equipo.get(10), 85, 65); // Villa
+        addParticipacion(alineacion, equipo.get(3), 20, 15); 
+        addParticipacion(alineacion, equipo.get(1), 20, 40); 
+        addParticipacion(alineacion, equipo.get(2), 20, 60); 
+        addParticipacion(alineacion, equipo.get(4), 20, 85); 
+        
+        
+        addParticipacion(alineacion, equipo.get(5), 45, 20); 
+        addParticipacion(alineacion, equipo.get(7), 40, 50); 
+        addParticipacion(alineacion, equipo.get(6), 45, 80); 
+        addParticipacion(alineacion, equipo.get(8), 60, 50); 
+        
+        
+        addParticipacion(alineacion, equipo.get(9), 85, 35); 
+        addParticipacion(alineacion, equipo.get(10), 85, 65); 
 
         alineacionRepository.save(alineacion);
     }
@@ -126,16 +126,16 @@ public class DataLoader implements CommandLineRunner {
         alineacion.setEntrenador(entrenador);
         alineacion.setPosiciones(new ArrayList<>());
 
-        // Portero
+        
         addParticipacion(alineacion, equipo.get(0), 5, 50);
-        // Defensas (3)
-        addParticipacion(alineacion, equipo.get(1), 25, 50); // Central
-        addParticipacion(alineacion, equipo.get(3), 25, 20); // Lateral Izq
-        addParticipacion(alineacion, equipo.get(4), 25, 80); // Lateral Der
-        // Medios (2)
+        
+        addParticipacion(alineacion, equipo.get(1), 25, 50); 
+        addParticipacion(alineacion, equipo.get(3), 25, 20); 
+        addParticipacion(alineacion, equipo.get(4), 25, 80); 
+        
         addParticipacion(alineacion, equipo.get(5), 55, 30); 
         addParticipacion(alineacion, equipo.get(6), 55, 70);
-        // Delantero (1)
+        
         addParticipacion(alineacion, equipo.get(9), 85, 50);
 
         alineacionRepository.save(alineacion);
@@ -148,14 +148,14 @@ public class DataLoader implements CommandLineRunner {
         alineacion.setEntrenador(entrenador);
         alineacion.setPosiciones(new ArrayList<>());
 
-        // Portero
+        
         addParticipacion(alineacion, equipo.get(0), 5, 50);
-        // Cierre
+        
         addParticipacion(alineacion, equipo.get(1), 25, 50); 
-        // Alas
+        
         addParticipacion(alineacion, equipo.get(5), 50, 20); 
         addParticipacion(alineacion, equipo.get(6), 50, 80);
-        // Pivot
+        
         addParticipacion(alineacion, equipo.get(9), 80, 50);
 
         alineacionRepository.save(alineacion);

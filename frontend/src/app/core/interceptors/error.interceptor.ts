@@ -13,7 +13,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       let message = 'Ha ocurrido un error inesperado';
 
       if (error.error) {
-        // Si el error es un string (posible JSON stringificado por responseType:'text')
+        
         if (typeof error.error === 'string') {
           try {
             const parsed = JSON.parse(error.error);

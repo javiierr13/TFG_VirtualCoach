@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class JugadorService {
   private http = inject(HttpClient);
 
-  // Signal para la lista de jugadores
+  
   jugadores = signal<Jugador[]>([]);
 
   loadJugadores(): Observable<Jugador[]> {

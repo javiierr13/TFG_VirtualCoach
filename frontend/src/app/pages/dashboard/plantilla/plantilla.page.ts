@@ -36,10 +36,10 @@ export class PlantillaPage implements OnInit {
 
   isModalOpen = signal(false);
   
-  // Estado de edición
+  
   editandoJugadorId = signal<number | null>(null);
 
-  // Formulario nuevo jugador
+  
   nuevoJugador = signal({
     nombre: '',
     dorsal: null as number | null,

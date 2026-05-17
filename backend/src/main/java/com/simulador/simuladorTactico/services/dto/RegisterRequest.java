@@ -10,6 +10,6 @@ import lombok.Setter;
 public class RegisterRequest {
     private String nombre;
     private String correo;
-    private String password1; // Contraseña
-    private String password2; // Repetir contraseña
+    private String password1; 
+    private String password2; 
 }

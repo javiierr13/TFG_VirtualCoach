@@ -11,7 +11,7 @@ public class AlineacionRequest {
     private String nombre;
     private String tipoFormacion; 
     private TipoFutbol tipoFutbol; 
-    private List<PosicionJugadorDTO> posiciones; // La lista de jugadores y sus coordenadas
+    private List<PosicionJugadorDTO> posiciones; 
 
     @Getter
     @Setter

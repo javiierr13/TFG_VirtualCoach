@@ -34,13 +34,13 @@ public class Alineacion {
 	@Column(name = "tipo_futbol")
 	private TipoFutbol tipoFutbol;
 
-	// Relación ManyToOne: Muchas alineaciones pertenecen a un Entrenador
+	
 	@ManyToOne
 	@JoinColumn(name = "id_entrenador", nullable = false)
 	@JsonIgnore
 	private Entrenador entrenador;
 
-	// Relación OneToMany: Una alineación tiene muchas posiciones (Participa)
+	
 	@OneToMany(mappedBy = "alineacion", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Participa> posiciones;
 

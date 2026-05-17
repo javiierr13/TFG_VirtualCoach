@@ -40,7 +40,7 @@ export class PerfilPage implements OnInit {
   }
 
   ngOnInit() {
-    // Inicializamos con los datos reales almacenados en el servicio
+    
     this.perfilForm.patchValue({
       nombre: this.authService.nombreEntrenador(),
       correo: this.authService.emailUsuario()

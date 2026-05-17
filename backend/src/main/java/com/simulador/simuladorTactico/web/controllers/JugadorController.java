@@ -29,7 +29,7 @@ public class JugadorController {
 
     @PostMapping
     public ResponseEntity<Jugador> crearJugador(@RequestBody JugadorRequest request, Principal principal) {
-        // principal.getName() devuelve el correo del token JWT
+        
         return ResponseEntity.ok(jugadorService.crearJugador(request, principal.getName()));
     }
 
@@ -38,25 +38,25 @@ public class JugadorController {
         return ResponseEntity.ok(jugadorService.listarMisJugadores(principal.getName()));
     }
     
- // Endpoint: GET /api/jugadores/buscar-nombre?nombre=Leo
+ 
     @GetMapping("/buscar-nombre")
     public ResponseEntity<List<Jugador>> buscarPorNombre(@RequestParam String nombre, Principal principal) {
         return ResponseEntity.ok(jugadorService.buscarPorNombre(nombre, principal.getName()));
     }
 
-    // Endpoint: GET /api/jugadores/buscar-posicion?posicion=DELANTERO
+    
     @GetMapping("/buscar-posicion")
     public ResponseEntity<List<Jugador>> buscarPorPosicion(@RequestParam Posicion posicion, Principal principal) {
         return ResponseEntity.ok(jugadorService.buscarPorPosicion(posicion, principal.getName()));
     }
     
     
- // Endpoint: DELETE /api/jugadores/{id}
+ 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarJugador(@PathVariable Integer id, Principal principal) {
         jugadorService.eliminarJugador(id, principal.getName());
         
-        // Devolvemos 204 No Content 
+        
         return ResponseEntity.noContent().build();
     }
 

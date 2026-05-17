@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AlineacionService {
   private http = inject(HttpClient);
 
-  // Signal para las alineaciones guardadas
+  
   alineaciones = signal<Alineacion[]>([]);
 
   listarAlineaciones(): Observable<Alineacion[]> {

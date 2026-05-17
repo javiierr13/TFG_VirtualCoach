@@ -17,12 +17,12 @@ public class Participa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	// Relación: Qué jugador está en esta posición
+	
 	@ManyToOne
 	@JoinColumn(name = "id_jugador", nullable = false)
 	private Jugador jugador;
 
-	// Relación: A qué pizarra pertenece esta ficha
+	
 	@ManyToOne
 	@JoinColumn(name = "id_alineacion", nullable = false)
 	@JsonIgnore

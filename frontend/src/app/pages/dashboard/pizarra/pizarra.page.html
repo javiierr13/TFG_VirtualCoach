@@ -14,11 +14,11 @@
     </div>
 
     <div class="flex flex-col lg:flex-row flex-1 gap-4 lg:gap-6 min-h-0 overflow-y-auto lg:overflow-hidden">
-      <!-- Panel de Configuración Superior (Mobile) / Izquierdo (Desktop) -->
+      
       <div class="w-full lg:w-72 flex flex-col gap-4 flex-shrink-0">
-        <!-- Grid para inputs en mobile para ahorrar espacio -->
+        
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
-          <!-- Nombre de la Táctica -->
+          
           <div class="bg-[#1a1f2e] rounded-2xl p-3 border border-white/5 shadow-lg group focus-within:border-[#00c853]/50 transition-all md:col-span-2 lg:col-span-1">
             <ion-item lines="none" class="--background-transparent text-white">
               <ion-label position="stacked" class="text-[10px] font-black text-[#00c853] uppercase tracking-[0.2em] mb-1">Nombre de la Táctica</ion-label>
@@ -32,7 +32,7 @@
             </ion-item>
           </div>
   
-          <!-- Tipo de Fútbol -->
+          
           <div class="bg-[#1a1f2e] rounded-2xl border border-white/5 shadow-lg group focus-within:border-[#00c853]/50 transition-all">
             <ion-select 
               [ngModel]="tipoFutbol()" 
@@ -48,7 +48,7 @@
             </ion-select>
           </div>
   
-          <!-- Formación -->
+          
           <div class="bg-[#1a1f2e] rounded-2xl border border-white/5 shadow-lg group focus-within:border-[#00c853]/50 transition-all">
             <ion-select 
               [ngModel]="formacion()" 
@@ -64,7 +64,7 @@
             </ion-select>
           </div>
   
-          <!-- Botón para plantar rival -->
+          
           <ion-button 
             fill="clear" 
             (click)="plantarRival()" 
@@ -74,7 +74,7 @@
             PLANTAR RIVAL
           </ion-button>
   
-          <!-- Botón de Guardado -->
+          
           <ion-button 
             expand="block" 
             (click)="guardar()" 
@@ -86,9 +86,9 @@
         </div>
       </div>
 
-      <!-- Área de la Pizarra y Banquillo -->
+      
       <div class="flex-1 flex flex-col min-w-0 min-h-[400px] lg:min-h-0">
-        <!-- Campo de Juego Realista -->
+        
         <div 
           class="relative flex-grow rounded-2xl border-4 border-[#2d5a3c] shadow-2xl overflow-hidden field-container select-none touch-none transition-colors duration-500"
           [style.background]="tipoFutbol() === 'FUTBOL_SALA' ? '#0096d2' : 'repeating-linear-gradient(90deg, #2d5a27 0%, #2d5a27 10%, #356b2e 10%, #356b2e 20%)'"
@@ -96,14 +96,14 @@
           (pointerup)="onDragEnd($event)"
           (pointerleave)="onDragEnd()"
         >
-          <!-- Capa de textura de hierba (solo para fútbol exterior) -->
+          
           @if (tipoFutbol() !== 'FUTBOL_SALA') {
             <div class="absolute inset-0 pointer-events-none opacity-20" 
                  style="background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');">
             </div>
           }
 
-          <!-- SVG de Líneas del Campo Dinámico -->
+          
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="absolute inset-0 w-full h-full pointer-events-none">
             @switch (tipoFutbol()) {
               @case ('FUTBOL_11') {
@@ -162,7 +162,7 @@
             <path d="M 98 95 A 3 3 0 0 0 95 98" fill="none" stroke="white" stroke-width="0.6" />
           </svg>
           
-          <!-- Fichas de Jugadores -->
+          
           @for (pos of posiciones(); track pos.jugadorId) {
             <div 
               class="absolute w-10 h-10 md:w-12 md:h-12 -translate-x-1/2 -translate-y-1/2 cursor-move z-10 select-none touch-none"
@@ -176,7 +176,7 @@
                   {{ getJugadorName(pos.jugadorId) }}
                 </span>
                 
-                <!-- Botón de eliminar -->
+                
                 <div 
                   class="absolute -top-1 -right-1 bg-red-600 rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md active:scale-90 transition-transform cursor-pointer z-20"
                   (pointerdown)="$event.stopPropagation()"
@@ -188,7 +188,7 @@
             </div>
           }
 
-          <!-- Fichas de Jugadores Rivales -->
+          
           @for (riv of posicionesRivales(); track riv.id) {
             <div 
               class="absolute w-10 h-10 md:w-12 md:h-12 -translate-x-1/2 -translate-y-1/2 cursor-move z-10 select-none touch-none"
@@ -199,7 +199,7 @@
               <div class="w-full h-full bg-red-600 rounded-full flex flex-col items-center justify-center shadow-lg border-2 border-white transition-transform active:scale-125">
                 <span class="text-white font-black text-lg leading-none">{{ riv.numero }}</span>
                 
-                <!-- Botón de eliminar -->
+                
                 <div 
                   class="absolute -top-1 -right-1 bg-gray-800 rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md active:scale-90 transition-transform cursor-pointer z-20"
                   (pointerdown)="$event.stopPropagation()"
@@ -218,7 +218,7 @@
           }
         </div>
 
-        <!-- Banquillo -->
+        
         <div class="mt-4">
           <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-2 px-1">Banquillo</h3>
           <div class="flex gap-4 overflow-x-auto pb-2 px-1 no-scrollbar">
@@ -241,7 +241,7 @@
     </div>
   </div>
 
-  <!-- Ficha Flotante al arrastrar desde el banquillo -->
+  
   @if (draggedBenchJugadorId !== null) {
     <div 
       class="fixed pointer-events-none z-[9999] w-10 h-10 md:w-12 md:h-12"

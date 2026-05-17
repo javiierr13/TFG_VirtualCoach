@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CoordenadaDTO {
     private String etiqueta; 
-    private double x;        // Posición horizontal (0-100%)
-    private double y;        // Posición vertical (0-100%)
+    private double x;        
+    private double y;        
 }
