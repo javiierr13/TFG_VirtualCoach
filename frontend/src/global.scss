@@ -33,3 +33,21 @@ body {
 
 
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Force premium dark navy background globally across all platforms, browsers, and modes */
+body,
+html,
+ion-app,
+ion-content {
+  --ion-background-color: #0a0e1a !important;
+  --ion-background-color-rgb: 10, 14, 26 !important;
+  --ion-item-background: #111522 !important;
+  --ion-toolbar-background: #0a0e1a !important;
+  --ion-tab-bar-background: #0a0e1a !important;
+  background-color: #0a0e1a !important;
+}
+
+/* Customize ionic cards and items to match the design system */
+ion-item, ion-card {
+  --background: #111522 !important;
+}

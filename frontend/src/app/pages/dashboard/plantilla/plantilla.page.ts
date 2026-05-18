@@ -1,16 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { 
-  IonContent, IonHeader, IonToolbar, IonTitle, IonList, 
-  IonItem, IonLabel, IonAvatar, IonBadge, IonFab, 
+import {
+  IonContent, IonHeader, IonToolbar, IonTitle, IonList,
+  IonItem, IonLabel, IonAvatar, IonBadge, IonFab,
   IonFabButton, IonIcon, IonModal, IonButton, IonButtons,
   IonInput, IonSelect, IonSelectOption, IonSearchbar, ModalController,
-  IonItemSliding, IonItemOptions, IonItemOption, IonChip
+  IonItemSliding, IonItemOptions, IonItemOption, IonChip, AlertController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { 
-  addOutline, trashOutline, searchOutline, 
+import {
+  addOutline, trashOutline, searchOutline,
   filterOutline, shirtOutline, bodyOutline,
   pencilOutline, closeOutline
 } from 'ionicons/icons';
@@ -23,8 +23,8 @@ import { Jugador, Posicion, Pierna } from '../../../models/jugador.model';
   standalone: true,
   imports: [
     CommonModule, FormsModule,
-    IonContent, IonHeader, IonToolbar, IonTitle, IonList, 
-    IonItem, IonLabel, IonAvatar, IonBadge, IonFab, 
+    IonContent, IonHeader, IonToolbar, IonTitle, IonList,
+    IonItem, IonLabel, IonAvatar, IonBadge, IonFab,
     IonFabButton, IonIcon, IonModal, IonButton, IonButtons,
     IonInput, IonSelect, IonSelectOption, IonSearchbar, IonItemSliding,
     IonItemOptions, IonItemOption, IonChip
@@ -33,13 +33,14 @@ import { Jugador, Posicion, Pierna } from '../../../models/jugador.model';
 export class PlantillaPage implements OnInit {
   public jugadorService = inject(JugadorService);
   private modalCtrl = inject(ModalController);
+  private alertCtrl = inject(AlertController);
 
   isModalOpen = signal(false);
-  
-  
+
+
   editandoJugadorId = signal<number | null>(null);
 
-  
+
   nuevoJugador = signal({
     nombre: '',
     dorsal: null as number | null,
@@ -48,8 +49,8 @@ export class PlantillaPage implements OnInit {
   });
 
   constructor() {
-    addIcons({ 
-      addOutline, trashOutline, searchOutline, 
+    addIcons({
+      addOutline, trashOutline, searchOutline,
       filterOutline, shirtOutline, bodyOutline,
       pencilOutline, closeOutline
     });
@@ -61,7 +62,7 @@ export class PlantillaPage implements OnInit {
 
   setOpen(isOpen: boolean, jugador?: Jugador) {
     this.isModalOpen.set(isOpen);
-    
+
     if (isOpen && jugador) {
       this.editandoJugadorId.set(jugador.id);
       this.nuevoJugador.set({
@@ -98,6 +99,15 @@ export class PlantillaPage implements OnInit {
     }
   }
 
+  async mostrarError(mensaje: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Atención',
+      message: mensaje,
+      buttons: ['Aceptar']
+    });
+    await alert.present();
+  }
+
   guardarJugador() {
     const { nombre, dorsal, posicion, pierna } = this.nuevoJugador();
     if (!nombre || !dorsal) return;
@@ -110,12 +120,24 @@ export class PlantillaPage implements OnInit {
     };
 
     if (this.editandoJugadorId()) {
-      this.jugadorService.actualizarJugador(this.editandoJugadorId()!, request).subscribe(() => {
-        this.setOpen(false);
+      this.jugadorService.actualizarJugador(this.editandoJugadorId()!, request).subscribe({
+        next: () => {
+          this.setOpen(false);
+        },
+        error: (err) => {
+          const mensaje = err?.error?.message || 'Error al actualizar el jugador';
+          this.mostrarError(mensaje);
+        }
       });
     } else {
-      this.jugadorService.crearJugador(request).subscribe(() => {
-        this.setOpen(false);
+      this.jugadorService.crearJugador(request).subscribe({
+        next: () => {
+          this.setOpen(false);
+        },
+        error: (err) => {
+          const mensaje = err?.error?.message || 'Error al crear el jugador';
+          this.mostrarError(mensaje);
+        }
       });
     }
   }
@@ -125,10 +147,10 @@ export class PlantillaPage implements OnInit {
   }
 
   getPosicionColor(pos: string): string {
-    switch(pos) {
+    switch (pos) {
       case 'PORTERO': return 'warning';
-      case 'DEFENSA': return 'success';
-      case 'MEDIOCENTRO': return 'primary';
+      case 'DEFENSA': return 'secondary';
+      case 'MEDIOCENTRO': return 'success';
       case 'DELANTERO': return 'danger';
       default: return 'medium';
     }

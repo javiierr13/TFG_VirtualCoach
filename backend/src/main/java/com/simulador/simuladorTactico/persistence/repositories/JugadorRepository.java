@@ -14,4 +14,7 @@ public interface JugadorRepository extends JpaRepository<Jugador, Integer> {
 
     List<Jugador> findByEntrenadorCorreoAndNombreContainingIgnoreCase(String correo, String nombre);
     List<Jugador> findByEntrenadorCorreoAndPosicion(String correo, Posicion posicion);
+    
+    boolean existsByEntrenadorCorreoAndDorsal(String correo, Integer dorsal);
+    boolean existsByEntrenadorCorreoAndDorsalAndIdNot(String correo, Integer dorsal, Integer id);
 }

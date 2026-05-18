@@ -2,12 +2,8 @@
   <div class="p-4">
     <h2 class="text-2xl font-bold text-white mb-4">Gestión de Plantilla</h2>
 
-    <ion-searchbar 
-      placeholder="Buscar jugador..." 
-      class="custom-search mb-4"
-      (ionInput)="onSearch($event)"
-      debounce="500"
-    ></ion-searchbar>
+    <ion-searchbar placeholder="Buscar jugador..." class="custom-search mb-4" (ionInput)="onSearch($event)"
+      debounce="500"></ion-searchbar>
 
     <div class="flex overflow-x-auto pb-4 space-x-2 no-scrollbar">
       <ion-chip (click)="filterByPosicion('TODOS')" class="bg-[#1a1f2e] text-white">Todos</ion-chip>
@@ -19,55 +15,57 @@
 
     <ion-list class="bg-transparent">
       @for (jugador of jugadorService.jugadores(); track jugador.id) {
-        <div class="mb-3 bg-[#1a1f2e] rounded-2xl p-4 flex items-center justify-between group transition-all duration-300 hover:bg-[#242b3d] border border-white/5 hover:border-[#00c853]/20">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-[#00c853] flex items-center justify-center text-black font-black text-lg shadow-[0_0_15px_rgba(0,200,83,0.3)]">
-              {{ jugador.dorsal }}
-            </div>
-            <div>
-              <h2 class="font-bold text-white text-lg tracking-tight">{{ jugador.nombre }}</h2>
-              <div class="flex items-center gap-2 mt-1">
-                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ jugador.piernaDominante }}</span>
-                <span class="text-gray-700">|</span>
-                <ion-badge [color]="getPosicionColor(jugador.posicion)" class="rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-tighter">
-                  {{ jugador.posicion }}
-                </ion-badge>
-              </div>
+      <div
+        class="mb-3 bg-[#1a1f2e] rounded-2xl p-4 flex items-center justify-between group transition-all duration-300 hover:bg-[#242b3d] border border-white/5 hover:border-[#00c853]/20">
+        <div class="flex items-center gap-4">
+          <div
+            class="w-12 h-12 rounded-full bg-[#00c853] flex items-center justify-center text-black font-black text-lg shadow-[0_0_15px_rgba(0,200,83,0.3)]">
+            {{ jugador.dorsal }}
+          </div>
+          <div>
+            <h2 class="font-bold text-white text-lg tracking-tight">{{ jugador.nombre }}</h2>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ jugador.piernaDominante
+                }}</span>
+              <span class="text-gray-700">|</span>
+              <ion-badge [color]="getPosicionColor(jugador.posicion)"
+                class="rounded-lg px-2 py-1 text-[9px] font-black uppercase tracking-tighter">
+                {{ jugador.posicion }}
+              </ion-badge>
             </div>
           </div>
+        </div>
 
-          
-          <div class="flex items-center gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-            <button 
-              (click)="setOpen(true, jugador)"
-              class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#00c853]/10 hover:text-[#00c853] transition-all"
-            >
-              <ion-icon name="pencil-outline" class="text-xl"></ion-icon>
-            </button>
-            <button 
-              (click)="eliminar(jugador.id)"
-              class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-all delete-btn"
-            >
-              <ion-icon name="close-outline" class="text-2xl"></ion-icon>
-            </button>
-          </div>
+
+        <div class="flex items-center gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
+          <button (click)="setOpen(true, jugador)"
+            class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#00c853]/10 hover:text-[#00c853] transition-all">
+            <ion-icon name="pencil-outline" class="text-xl"></ion-icon>
+          </button>
+          <button (click)="eliminar(jugador.id)"
+            class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-all delete-btn">
+            <ion-icon name="close-outline" class="text-2xl"></ion-icon>
+          </button>
         </div>
+      </div>
       } @empty {
-        <div class="text-center py-20 text-gray-500 bg-[#1a1f2e]/20 rounded-[2rem] border border-dashed border-white/10 m-2">
-          <ion-icon name="body-outline" class="text-6xl mb-4 opacity-20"></ion-icon>
-          <p class="font-bold uppercase tracking-widest text-xs">No hay jugadores registrados</p>
-        </div>
+      <div
+        class="text-center py-20 text-gray-500 bg-[#1a1f2e]/20 rounded-[2rem] border border-dashed border-white/10 m-2">
+        <ion-icon name="body-outline" class="text-6xl mb-4 opacity-20"></ion-icon>
+        <p class="font-bold uppercase tracking-widest text-xs">No hay jugadores registrados</p>
+      </div>
       }
     </ion-list>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="mb-6 mr-6">
-    <ion-fab-button (click)="setOpen(true)" style="--background: #00c853; --box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4); --border-radius: 50%;">
+    <ion-fab-button (click)="setOpen(true)"
+      style="--background: #00c853; --box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4); --border-radius: 50%;">
       <ion-icon name="add-outline" class="text-black text-3xl"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  
+
   <ion-modal [isOpen]="isModalOpen()" mode="ios" class="player-modal">
     <ng-template>
       <ion-header class="ion-no-border">
@@ -83,12 +81,13 @@
 
       <ion-content class="ion-padding bg-[#0a0e1a]">
         <div class="space-y-6 mt-4">
-          
+
           <div class="space-y-2">
             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-2">Nombre Completo</label>
             <div class="bg-[#1a1f2e] rounded-2xl border border-white/5 p-1">
               <ion-item lines="none" class="--background-transparent text-white">
-                <ion-input type="text" [(ngModel)]="nuevoJugador().nombre" placeholder="Ej: Lionel Messi" class="font-bold"></ion-input>
+                <ion-input type="text" [(ngModel)]="nuevoJugador().nombre" placeholder="Ej: Lionel Messi"
+                  class="font-bold"></ion-input>
               </ion-item>
             </div>
           </div>
@@ -97,7 +96,8 @@
             <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-2">Dorsal</label>
             <div class="bg-[#1a1f2e] rounded-2xl border border-white/5 p-1">
               <ion-item lines="none" class="--background-transparent text-white">
-                <ion-input type="number" [(ngModel)]="nuevoJugador().dorsal" placeholder="Ej: 10" class="font-bold"></ion-input>
+                <ion-input type="number" [(ngModel)]="nuevoJugador().dorsal" placeholder="Ej: 10"
+                  class="font-bold"></ion-input>
               </ion-item>
             </div>
           </div>
@@ -131,10 +131,8 @@
             </div>
           </div>
 
-          <button 
-            (click)="guardarJugador()" 
-            class="w-full h-14 bg-gradient-to-r from-[#00c853] to-[#009624] text-black font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(0,200,83,0.3)] active:scale-95 transition-all mt-8"
-          >
+          <button (click)="guardarJugador()"
+            class="w-full h-14 bg-gradient-to-r from-[#00c853] to-[#009624] text-black font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_30px_rgba(0,200,83,0.3)] active:scale-95 transition-all mt-8">
             {{ editandoJugadorId() ? 'GUARDAR CAMBIOS' : 'AÑADIR A PLANTILLA' }}
           </button>
         </div>
@@ -151,22 +149,26 @@
     --icon-color: #00c853;
     --border-radius: 12px;
   }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .player-modal {
     --background: #0a0e1a;
     --height: 100%;
     --border-radius: 0;
   }
+
   @media (min-width: 768px) {
     .player-modal {
       --height: 550px;
       --border-radius: 2rem;
     }
   }
+
   ion-modal::part(backdrop) {
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
   }
 </style>

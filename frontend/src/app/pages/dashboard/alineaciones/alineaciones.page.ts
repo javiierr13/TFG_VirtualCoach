@@ -6,8 +6,8 @@ import {
   IonContent, IonList, 
   IonItem, IonLabel, IonIcon, 
   IonButton,
-  IonBadge, IonItemSliding, IonItemOptions, IonItemOption,
-  IonFab, IonFabButton
+  IonBadge,
+  IonFab, IonFabButton, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trashOutline, calendarOutline, footballOutline, closeOutline, addOutline } from 'ionicons/icons';
@@ -23,13 +23,14 @@ import { AlineacionService } from '../../../core/services/alineacion.service';
     IonContent, IonList, 
     IonItem, IonLabel, IonIcon, 
     IonButton,
-    IonBadge, IonItemSliding, IonItemOptions, IonItemOption,
+    IonBadge,
     IonFab, IonFabButton
   ]
 })
 export class AlineacionesPage implements OnInit {
   public alineacionService = inject(AlineacionService);
   private router = inject(Router);
+  private toastCtrl = inject(ToastController);
 
   constructor() {
     addIcons({ trashOutline, calendarOutline, footballOutline, closeOutline, addOutline });
@@ -44,7 +45,29 @@ export class AlineacionesPage implements OnInit {
   }
 
   eliminar(id: number) {
-    this.alineacionService.borrarAlineacion(id).subscribe();
+    this.alineacionService.borrarAlineacion(id).subscribe({
+      next: async () => {
+        const toast = await this.toastCtrl.create({
+          message: 'ALINEACIÓN ELIMINADA CON ÉXITO',
+          duration: 2000,
+          color: 'success',
+          position: 'top',
+          mode: 'ios'
+        });
+        toast.present();
+      },
+      error: async (err) => {
+        const mensaje = err?.error?.message || 'Error al eliminar la alineación.';
+        const toast = await this.toastCtrl.create({
+          message: mensaje,
+          duration: 3000,
+          color: 'danger',
+          position: 'top',
+          mode: 'ios'
+        });
+        toast.present();
+      }
+    });
   }
 
   editarTactica(id: number) {

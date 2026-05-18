@@ -72,8 +72,17 @@ export class RegisterPage {
         toast.present();
         this.router.navigate(['/auth/login']);
       },
-      error: () => {
+      error: async (err) => {
         this.loading.set(false);
+        const mensaje = err?.error?.message || 'Error al registrar el entrenador. Es posible que el correo ya esté en uso.';
+        const toast = await this.toastCtrl.create({
+          message: mensaje,
+          duration: 4000,
+          color: 'danger',
+          position: 'top',
+          mode: 'ios'
+        });
+        toast.present();
       }
     });
   }

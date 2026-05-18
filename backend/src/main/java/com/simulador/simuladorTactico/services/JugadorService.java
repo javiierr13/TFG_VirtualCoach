@@ -26,6 +26,10 @@ public class JugadorService {
 		Entrenador entrenador = entrenadorRepository.findByCorreo(emailEntrenador)
 				.orElseThrow(() -> new RuntimeException("Entrenador no encontrado"));
 
+		if (jugadorRepository.existsByEntrenadorCorreoAndDorsal(emailEntrenador, request.getDorsal())) {
+			throw new RuntimeException("El dorsal " + request.getDorsal() + " ya está siendo utilizado por otro jugador de tu plantilla.");
+		}
+
 		Jugador jugador = new Jugador();
 		jugador.setNombre(request.getNombre());
 		jugador.setDorsal(request.getDorsal());
@@ -73,6 +77,10 @@ public class JugadorService {
 		
 		if (!jugador.getEntrenador().getCorreo().equals(emailEntrenador)) {
 			throw new RuntimeException("No tienes permiso para editar este jugador");
+		}
+
+		if (jugadorRepository.existsByEntrenadorCorreoAndDorsalAndIdNot(emailEntrenador, request.getDorsal(), id)) {
+			throw new RuntimeException("El dorsal " + request.getDorsal() + " ya está siendo utilizado por otro jugador de tu plantilla.");
 		}
 
 		jugador.setNombre(request.getNombre());

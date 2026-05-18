@@ -49,6 +49,13 @@ export class PerfilPage implements OnInit {
 
   async guardarCambios() {
     if (this.perfilForm.valid) {
+      const { nombre, correo } = this.perfilForm.value;
+      
+      this.authService.nombreEntrenador.set(nombre);
+      localStorage.setItem('nombreEntrenador', nombre);
+      this.authService.emailUsuario.set(correo);
+      localStorage.setItem('emailUsuario', correo);
+
       const toast = await this.toastCtrl.create({
         message: '¡PERFIL GUARDADO CON ÉXITO!',
         duration: 3000,

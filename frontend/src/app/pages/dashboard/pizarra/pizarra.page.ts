@@ -9,7 +9,7 @@ import {
   IonItem, ToastController, IonInput
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { saveOutline, refreshOutline, optionsOutline, personCircleOutline, arrowBackOutline, closeOutline, flagOutline, peopleOutline } from 'ionicons/icons';
+import { saveOutline, refreshOutline, optionsOutline, personCircleOutline, arrowBackOutline, closeOutline, flagOutline, peopleOutline, footballOutline } from 'ionicons/icons';
 import { JugadorService } from '../../../core/services/jugador.service';
 import { AlineacionService } from '../../../core/services/alineacion.service';
 import { TipoFutbol, PosicionJugadorDTO } from '../../../models/alineacion.model';
@@ -49,6 +49,19 @@ export class PizarraPage implements OnInit {
   tipoFutbol = signal<TipoFutbol>('FUTBOL_11');
   formacion = signal<string>('4-4-2');
 
+  balonPos = signal({ x: 50, y: 50 });
+  draggedBalon = signal(false);
+
+  jugadorSeleccionadoBanquillo = signal<number | null>(null);
+
+  seleccionarJugadorBanquillo(id: number) {
+    if (this.jugadorSeleccionadoBanquillo() === id) {
+      this.jugadorSeleccionadoBanquillo.set(null);
+    } else {
+      this.jugadorSeleccionadoBanquillo.set(id);
+    }
+  }
+
   formacionesDisponibles = {
     'FUTBOL_11': ['4-3-3', '3-5-2', '5-4-1'],
     'FUTBOL_7': ['2-3-1', '3-2-1', '3-1-2'],
@@ -56,11 +69,11 @@ export class PizarraPage implements OnInit {
   };
 
   coordenadasBase: any = {
-    '4-4-2': [ 
-      { x: 8, y: 50 }, 
-      { x: 25, y: 20 }, { x: 25, y: 40 }, { x: 25, y: 60 }, { x: 25, y: 80 }, 
-      { x: 50, y: 20 }, { x: 50, y: 40 }, { x: 50, y: 60 }, { x: 50, y: 80 }, 
-      { x: 75, y: 35 }, { x: 75, y: 65 } 
+    '4-4-2': [
+      { x: 8, y: 50 },
+      { x: 25, y: 20 }, { x: 25, y: 40 }, { x: 25, y: 60 }, { x: 25, y: 80 },
+      { x: 50, y: 20 }, { x: 50, y: 40 }, { x: 50, y: 60 }, { x: 50, y: 80 },
+      { x: 75, y: 35 }, { x: 75, y: 65 }
     ],
     '4-3-3': [
       { x: 8, y: 50 },
@@ -74,47 +87,53 @@ export class PizarraPage implements OnInit {
       { x: 45, y: 20 }, { x: 55, y: 35 }, { x: 55, y: 50 }, { x: 55, y: 65 }, { x: 45, y: 80 },
       { x: 75, y: 40 }, { x: 75, y: 60 }
     ],
-    '2-3-1': [ 
+    '5-4-1': [
+      { x: 8, y: 50 },
+      { x: 25, y: 15 }, { x: 22, y: 35 }, { x: 20, y: 50 }, { x: 22, y: 65 }, { x: 25, y: 85 },
+      { x: 48, y: 20 }, { x: 45, y: 40 }, { x: 45, y: 60 }, { x: 48, y: 80 },
+      { x: 75, y: 50 }
+    ],
+    '2-3-1': [
       { x: 8, y: 50 },
       { x: 25, y: 30 }, { x: 25, y: 70 },
       { x: 50, y: 20 }, { x: 50, y: 50 }, { x: 50, y: 80 },
       { x: 75, y: 50 }
     ],
-    '3-2-1': [ 
+    '3-2-1': [
       { x: 8, y: 50 },
       { x: 25, y: 20 }, { x: 25, y: 50 }, { x: 25, y: 80 },
       { x: 50, y: 35 }, { x: 50, y: 65 },
       { x: 75, y: 50 }
     ],
-    '3-1-2': [ 
+    '3-1-2': [
       { x: 8, y: 50 },
       { x: 25, y: 20 }, { x: 25, y: 50 }, { x: 25, y: 80 },
       { x: 50, y: 50 },
       { x: 75, y: 35 }, { x: 75, y: 65 }
     ],
-    '1-2-1': [ 
+    '1-2-1': [
       { x: 10, y: 50 },
       { x: 30, y: 50 },
       { x: 50, y: 25 }, { x: 50, y: 75 },
       { x: 75, y: 50 }
     ],
-    '2-2': [ 
+    '2-2': [
       { x: 10, y: 50 },
       { x: 30, y: 30 }, { x: 30, y: 70 },
       { x: 65, y: 30 }, { x: 65, y: 70 }
     ],
-    '3-1': [ 
+    '3-1': [
       { x: 10, y: 50 },
       { x: 30, y: 20 }, { x: 30, y: 50 }, { x: 30, y: 80 },
       { x: 70, y: 50 }
     ]
   };
 
-  
+
   posiciones = signal<PosicionJugadorDTO[]>([]);
   posicionesRivales = signal<PosicionRival[]>([]);
 
-  
+
   banquillo = computed(() => {
     const todos = this.jugadorService.jugadores();
     const puestos = this.posiciones().map(p => p.jugadorId);
@@ -122,7 +141,7 @@ export class PizarraPage implements OnInit {
   });
 
   constructor() {
-    addIcons({ saveOutline, refreshOutline, optionsOutline, personCircleOutline, arrowBackOutline, closeOutline, flagOutline, peopleOutline });
+    addIcons({ saveOutline, refreshOutline, optionsOutline, personCircleOutline, arrowBackOutline, closeOutline, flagOutline, peopleOutline, footballOutline });
 
     effect(() => {
       const tipo = this.tipoFutbol();
@@ -148,6 +167,7 @@ export class PizarraPage implements OnInit {
         this.nombreTactica.set('');
         this.posiciones.set([]);
         this.posicionesRivales.set([]);
+        this.balonPos.set({ x: 50, y: 50 });
       }
     });
   }
@@ -156,12 +176,13 @@ export class PizarraPage implements OnInit {
     this.cargando.set(true);
     this.alineacionService.getAlineacion(id).subscribe({
       next: (ali) => {
-        this.posicionesRivales.set([]); 
+        this.posicionesRivales.set([]);
         this.nombreTactica.set(ali.nombre || '');
         this.tipoFutbol.set(ali.tipoFutbol);
         this.formacion.set(ali.tipoFormacion);
+        this.balonPos.set({ x: 50, y: 50 });
 
-        
+
         const posDTOs: PosicionJugadorDTO[] = ali.posiciones.map(p => ({
           jugadorId: p.jugador.id,
           posX: p.posX,
@@ -171,7 +192,18 @@ export class PizarraPage implements OnInit {
         this.posiciones.set(posDTOs);
         this.cargando.set(false);
       },
-      error: () => this.cargando.set(false)
+      error: async (err) => {
+        this.cargando.set(false);
+        const mensaje = err?.error?.message || 'Error al cargar la táctica seleccionada.';
+        const toast = await this.toastCtrl.create({
+          message: mensaje,
+          duration: 3000,
+          color: 'danger',
+          position: 'top',
+          mode: 'ios'
+        });
+        toast.present();
+      }
     });
   }
 
@@ -196,10 +228,12 @@ export class PizarraPage implements OnInit {
   limpiarCampo() {
     this.posiciones.set([]);
     this.posicionesRivales.set([]);
+    this.balonPos.set({ x: 50, y: 50 });
+    this.jugadorSeleccionadoBanquillo.set(null);
   }
 
   async resetPizarra() {
-    
+
     const jugadores = this.jugadorService.jugadores();
     const numRequerido = this.tipoFutbol() === 'FUTBOL_11' ? 11 : this.tipoFutbol() === 'FUTBOL_7' ? 7 : 5;
 
@@ -227,6 +261,8 @@ export class PizarraPage implements OnInit {
 
     this.posiciones.set(nuevasPosiciones);
     this.plantarRival();
+    this.balonPos.set({ x: 50, y: 50 });
+    this.jugadorSeleccionadoBanquillo.set(null);
   }
 
   draggedJugadorId: number | null = null;
@@ -245,13 +281,17 @@ export class PizarraPage implements OnInit {
     this.draggedBenchJugadorId = jugadorId;
   }
 
+  onDragStartBalon() {
+    this.draggedBalon.set(true);
+  }
+
   onGlobalPointerMove(event: PointerEvent) {
-    if (this.draggedBenchJugadorId === null && this.draggedJugadorId === null && this.draggedRivalId === null) return;
+    if (this.draggedBenchJugadorId === null && this.draggedJugadorId === null && this.draggedRivalId === null && !this.draggedBalon()) return;
     this.mousePos.set({ x: event.clientX, y: event.clientY });
   }
 
   onDragMove(event: PointerEvent) {
-    if (this.draggedJugadorId === null && this.draggedRivalId === null) return;
+    if (this.draggedJugadorId === null && this.draggedRivalId === null && !this.draggedBalon()) return;
 
     const container = (event.currentTarget as HTMLElement);
     const rect = container.getBoundingClientRect();
@@ -259,7 +299,7 @@ export class PizarraPage implements OnInit {
     let x = ((event.clientX - rect.left) / rect.width) * 100;
     let y = ((event.clientY - rect.top) / rect.height) * 100;
 
-    
+
     x = Math.max(5, Math.min(95, x));
     y = Math.max(5, Math.min(95, y));
 
@@ -271,6 +311,8 @@ export class PizarraPage implements OnInit {
       this.posicionesRivales.update(pos => pos.map(p =>
         p.id === this.draggedRivalId ? { ...p, posX: Math.round(x), posY: Math.round(y) } : p
       ));
+    } else if (this.draggedBalon()) {
+      this.balonPos.set({ x: Math.round(x), y: Math.round(y) });
     }
   }
 
@@ -297,13 +339,37 @@ export class PizarraPage implements OnInit {
     this.draggedJugadorId = null;
     this.draggedRivalId = null;
     this.draggedBenchJugadorId = null;
+    this.draggedBalon.set(false);
   }
 
   onDropToBench() {
     if (this.draggedJugadorId !== null) {
-      
+
       this.posiciones.update(pos => pos.filter(p => p.jugadorId !== this.draggedJugadorId));
       this.draggedJugadorId = null;
+    }
+  }
+
+  onFieldClick(event: MouseEvent) {
+    const benchId = this.jugadorSeleccionadoBanquillo();
+    if (benchId !== null) {
+      const container = (event.currentTarget as HTMLElement);
+      const rect = container.getBoundingClientRect();
+
+      let x = ((event.clientX - rect.left) / rect.width) * 100;
+      let y = ((event.clientY - rect.top) / rect.height) * 100;
+
+      x = Math.max(5, Math.min(95, x));
+      y = Math.max(5, Math.min(95, y));
+
+      const nuevoPuesto: PosicionJugadorDTO = {
+        jugadorId: benchId,
+        posX: Math.round(x),
+        posY: Math.round(y)
+      };
+
+      this.posiciones.update(pos => [...pos, nuevoPuesto]);
+      this.jugadorSeleccionadoBanquillo.set(null);
     }
   }
 
@@ -342,14 +408,26 @@ export class PizarraPage implements OnInit {
 
     observable.subscribe({
       next: async (ali) => {
+        const mensajeToast = this.alineacionId() ? 'CAMBIOS GUARDADOS CON ÉXITO' : 'TÁCTICA GUARDADA CORRECTAMENTE';
         if (!this.alineacionId()) {
           this.alineacionId.set(ali.id);
         }
         const toast = await this.toastCtrl.create({
-          message: this.alineacionId() ? 'CAMBIOS GUARDADOS CON ÉXITO' : 'TÁCTICA GUARDADA CORRECTAMENTE',
+          message: mensajeToast,
           duration: 2000,
           color: 'success',
           cssClass: 'custom-toast'
+        });
+        toast.present();
+      },
+      error: async (err) => {
+        const mensaje = err?.error?.message || 'Error al guardar la táctica. Por favor, inténtalo de nuevo.';
+        const toast = await this.toastCtrl.create({
+          message: mensaje,
+          duration: 3500,
+          color: 'danger',
+          position: 'top',
+          mode: 'ios'
         });
         toast.present();
       }
